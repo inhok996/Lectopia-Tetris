@@ -16,6 +16,7 @@ typedef struct _tetris{
 	int gameState; // 현재 게임 상태 0 GAMEOVER, 1 PLAYING, 2 PAUSE, 3 READY
 	int blockState; //블럭 회전 카운트
 	int whichBlock; //블럭 모양
+	int nextBlock; //다음 블럭 모양 저장
 	int score; //현재 게임 점수
 }Tetris;
 
