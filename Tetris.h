@@ -9,9 +9,11 @@
 #define PAUSE 2
 #define READY 3
 
+extern int block[][4][4][4];
+
 typedef struct _tetris{
-	char** board; //백업보드
-	char** boPlusbl; //충돌체크, 출력용 보드
+	int** board; //백업보드
+	int** boPlusbl; //충돌체크, 출력용 보드
 	int x; //행원소
 	int y; //열원소
 	int gameState; // 현재 게임 상태 0 GAMEOVER, 1 PLAYING, 2 PAUSE, 3 READY
@@ -40,7 +42,7 @@ void printBoard(int** bo);
 //설명 : 블럭이 붙여진 보드를 원래 배경으로 되돌려 놓는다.
 //Postcondition : None
 //return : None
-void pasteBoard(int**bPb, int** bo,int x,int y);
+void pasteBoard(int**bPb, int** bo);
 
 //함수명 : pasteBlock
 //Precondition : bo와 bl이 적절한 값으로 초기화 되어 있다.
@@ -75,15 +77,14 @@ int lineErase(int** bpb, int y);
 //설명 : 게임을 초기화시키고 동적할당한 메모리를 모두 해제시킨다. Score를 리턴한다.
 //Postcondition : board 및 boPlusbl의 메모리 해제
 //return : None
-void gameOver(Tetris* Te);
+void gameOver(Tetris* te);
 
 //함수명 : createBlock 
 //Precondition : Tetris 구조체의 값이 적절히 차 있다. 
 //설명 : 랜덤으로 블럭을 생성한다. 
 //Postcondition : Te->whichBlock = rand();, blockState = 0 으로 초기화된다. 
 //return : None 
-void createBlock(Tetris* Te);
-
+void createBlock(Tetris* te);
 
 
 //함수명 : moveLeft
@@ -98,3 +99,6 @@ int moveDown(Tetris* te);
 //함수명 : rotate
 //return : 1(성공) 0 실패
 int rotate(Tetris* te);
+//함수명 : spaceMove
+//return :1(성공) 0 실패
+int spaceMove(Tetris* te);
