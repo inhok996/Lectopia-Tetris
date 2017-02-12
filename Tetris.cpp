@@ -152,3 +152,17 @@ void gameOver(Tetris* Te){}
 //return : None 
 void createBlock(Tetris* Te){}
 
+//함수명 : moveLeft
+//return : 1(성공), 0 실패
+int moveLeft(Tetris* te)
+{}
+//함수명 : move Right
+//return : 1(성공) 0 실패
+int moveRight(Tetris* te)
+{}
+//함수명 : move Down
+//return : 1(성공) 0 실패
+int moveDown(Tetris* te)
+{}
+int rotate(Tetris* te)
+{}
