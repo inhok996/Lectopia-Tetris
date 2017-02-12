@@ -1,13 +1,15 @@
 #pragma once
-#define BOARD_HEIGHT 20
-#define BOARD_WIDTH 10
-#define BLOCK_HEIGHT 4
-#define BLOCK_WIDTH 4
-#define WALLSIZE 4
-#define GAME_OVER 0
-#define PLAYING 1
-#define PAUSE 2
-#define READY 3
+#define BOARD_HEIGHT 20 //보드 높이
+#define BOARD_WIDTH 10 //보드 너비
+#define BLOCK_HEIGHT 4 //블럭 높이
+#define BLOCK_WIDTH 4  //블럭 너비
+#define WALLSIZE 4 //벽 크기
+#define BLOCK_NUM 7 //BLOCK NUMBER
+#define GAME_OVER 0 //gameState
+#define PLAYING 1 //gameState
+#define PAUSE 2 //gameState
+#define READY 3 //gameState
+
 
 extern int block[][4][4][4];
 
@@ -63,7 +65,7 @@ int crashCheck(int** bpb, int x, int y);
 //설명 : y가 가르키는 한 라인의 체크를 한다.
 //Postcondition : None
 //return : 1 (full line) , 0 (not full)
-int lineCheck(int** bpb, int y);
+int lineCheck(int** bPb, int y);
 
 //함수명 : lineErase
 //Precondition : bpb , y는 적절한 값으로 초기화되어 있다.
@@ -102,3 +104,9 @@ int rotate(Tetris* te);
 //함수명 : spaceMove
 //return :1(성공) 0 실패
 int spaceMove(Tetris* te);
+
+//Precondition : bPb와 y가 적절한 값으로 초기화 되어 있다.
+//설명 : y-1번~0번 줄에 있는 값을 y번~1번의 줄로 복사 붙여넣기 해준다.
+//Postcondition : None
+//return : None
+void moveBoardDown(int**bPb, int y);

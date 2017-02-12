@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<conio.h>
-#include<windows.h>
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
 #include <assert.h>
 #include <stdlib.h> //random 함수
 #include <time.h> //time 함수
@@ -229,8 +229,10 @@ void gamePlaying(){
 	tetris.gameState = PLAYING;
 	system("cls");
 	while(tetris.gameState){
-		system("cls");
+		gotoxy(1,1);
 		printBoard(tetris.boPlusbl);
+		//moveDown(&tetris);
+		//if(kbhit()){
 		ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
 		switch(ch){
 		case LEFT_ARROW:moveLeft(&tetris); break;
@@ -240,5 +242,6 @@ void gamePlaying(){
 		case SPACE: spaceMove(&tetris); break;
 		case ESC: break;
 		}
+		//}
 	}
 }

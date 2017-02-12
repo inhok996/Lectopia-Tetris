@@ -31,8 +31,169 @@ int block[][4][4][4]=
 			{1,0,0,0}, 
 			{0,0,0,0}, 
 		}
+	},
+	{
+		{
+			{0,0,0,0}, 
+			{0,1,0,0},
+			{1,1,1,0}, 
+			{0,0,0,0}
+		},   
+		{ 
+			{0,0,0,0}, 
+			{0,1,0,0}, 
+			{1,1,0,0}, 
+			{0,1,0,0} 
+		},    
+		{ 
+			{0,0,0,0}, 
+			{0,0,0,0}, 
+			{1,1,1,0}, 
+			{0,1,0,0} 
+		},    
+
+		{ 
+			{0,0,0,0}, 
+			{0,1,0,0}, 
+			{0,1,1,0}, 
+			{0,1,0,0} 
+		}, 
+	},
+	{
+		{
+			{0,0,0,0}, 
+			{0,0,1,0},
+			{1,1,1,0}, 
+			{0,0,0,0}
+		},   
+		{ 
+			{0,1,1,0}, 
+			{0,0,1,0}, 
+			{0,0,1,0}, 
+			{0,0,0,0} 
+		},    
+		{ 
+			{1,1,1,0}, 
+			{1,0,0,0}, 
+			{0,0,0,0}, 
+			{0,0,0,0} 
+		},    
+
+		{ 
+			{1,0,0,0}, 
+			{1,0,0,0}, 
+			{1,1,0,0}, 
+			{0,0,0,0} 
+		}, 
+	},
+	{
+		{
+			{0,1,0,0}, 
+			{0,1,0,0},
+			{0,1,0,0}, 
+			{0,1,0,0}
+		},   
+		{ 
+			{0,0,0,0}, 
+			{0,0,0,0}, 
+			{1,1,1,1}, 
+			{0,0,0,0} 
+		},    
+		{ 
+			{0,1,0,0}, 
+			{0,1,0,0}, 
+			{0,1,0,0}, 
+			{0,1,0,0} 
+		},    
+
+		{ 
+			{0,0,0,0}, 
+			{0,0,0,0}, 
+			{1,1,1,1}, 
+			{0,0,0,0} 
+		}, 
+	},
+	{
+		{
+			{1,1,0,0}, 
+			{1,1,0,0},
+			{0,0,0,0}, 
+			{0,0,0,0}
+		},   
+		{ 
+			{1,1,0,0}, 
+			{1,1,0,0}, 
+			{0,0,0,0}, 
+			{0,0,0,0} 
+		},    
+		{ 
+			{1,1,0,0}, 
+			{1,1,0,0}, 
+			{0,0,0,0}, 
+			{0,0,0,0} 
+		},    
+
+		{ 
+			{1,1,0,0}, 
+			{1,1,0,0}, 
+			{0,0,0,0}, 
+			{0,0,0,0} 
+		}, 
+	},
+	{
+		{
+			{0,0,0,0}, 
+			{0,1,1,0},
+			{1,1,0,0}, 
+			{0,0,0,0}
+		},   
+		{ 
+			{0,1,0,0}, 
+			{0,1,1,0}, 
+			{0,0,1,0}, 
+			{0,0,0,0} 
+		},    
+		{ 
+			{0,0,0,0}, 
+			{0,1,1,0}, 
+			{1,1,0,0}, 
+			{0,0,0,0} 
+		},    
+
+		{ 
+			{0,1,0,0}, 
+			{0,1,1,0}, 
+			{0,0,1,0}, 
+			{0,0,0,0} 
+		}, 
+	},
+	{
+		{
+			{0,0,0,0}, 
+			{1,1,0,0},
+			{0,1,1,0}, 
+			{0,0,0,0}
+		},   
+		{ 
+			{0,0,1,0}, 
+			{0,1,1,0}, 
+			{0,1,0,0}, 
+			{0,0,0,0} 
+		},    
+		{ 
+			{0,0,0,0}, 
+			{1,1,0,0}, 
+			{0,1,1,0}, 
+			{0,0,0,0} 
+		},    
+
+		{ 
+			{0,0,1,0}, 
+			{0,1,1,0}, 
+			{0,1,0,0}, 
+			{0,0,0,0} 
+		}, 
 	}
-	
 };
 
 
@@ -48,7 +209,7 @@ void printBoard(int** bo)
 		for(int j = WALLSIZE - 1 ; j < BOARD_WIDTH + WALLSIZE + 1; j++){
 			if(bo[i][j] == 1) printf("■ ");
 			else if(bo[i][j] ==2) printf("★ ");
-			else printf("□ ");
+			else printf("   ");
 		}
 		printf("\n");
 	}
@@ -143,21 +304,60 @@ int crashCheck(int** bpb, int x, int y)
 //설명 : y가 가르키는 한 라인의 체크를 한다.
 //Postcondition : None
 //return : 1 (full line) , 0 (not full)
-int lineCheck(int** bpb, int y){return 1;}
+int lineCheck(int** bPb, int y)
+{
+	for(int i=0;i<BOARD_WIDTH; i++)
+	{
+		//printf("%d \n",i);
+		//getch();
+		if(bPb[y][WALLSIZE+i] != 1  ||  y >= BOARD_HEIGHT  ) break;
+		if(i==BOARD_WIDTH-1) return 1;
+	}
+	return 0;
+}
 
 //함수명 : lineErase
 //Precondition : bpb , y는 적절한 값으로 초기화되어 있다.
 //설명 : y가 가르키는 블럭의 맨 아랫줄부터 라인을 체크하여 삭제한다.
 //Postcondition : bpb의 라인이 지워진 상태이다.(지워진 라인이 없을시에 bpb는 그대로)
 //return : 0 한줄도 못지웠을시, 1 한줄지움 2두줄지움 3세줄지움 4네줄지움
-int lineErase(int** bpb, int y){return 1;}
+int lineErase(int** bPb, int y)
+{
+	int i, j, k, cnt = 0;
+	for(i = 0; i < BLOCK_HEIGHT; i++)
+	{
+		//      printf("lineCheck y = %d, %d\n",y+i,lineCheck(bPb,y+i));
+		if( lineCheck(bPb,y+i) )
+		{
+			//         printf("라인체크 함수 리턴값:%d",lineCheck(bPb, y+i));
+			if( y+i >= BOARD_HEIGHT || (y+i) <1) break;
+			else{
+				cnt++;   printf("cnt=%d ",cnt);
+				moveBoardDown(bPb, y+i);
+			}
+		}
+	}
+	return cnt;
+}
 
 //함수명 : gameOver
 //Precondition : Tetris 구조체의 값이 적절히 차 있다.
 //설명 : 게임을 초기화시키고 동적할당한 메모리를 모두 해제시킨다. Score를 리턴한다.
 //Postcondition : board 및 boPlusbl의 메모리 해제
 //return : None
-void gameOver(Tetris* te){}
+void gameOver(Tetris* te)
+{
+	int i;
+	for (i = 0; i < BOARD_WIDTH; i++)
+		if (te->boPlusbl[0][WALLSIZE+i] != 0)
+			te->gameState = GAME_OVER;
+	free(te->board);
+	free(te->boPlusbl);
+	te->x = (BOARD_WIDTH + WALLSIZE * 2) / 2 - 2;
+	te->y = 0;
+	te->blockState = 0; //회전 4가지모양 
+	te->whichBlock = 0;// 배열의 첫번째 index 7가지
+}
 
 //함수명 : createBlock 
 //Precondition : Tetris 구조체의 값이 적절히 차 있다., srand가 1회 이상 호출되어야 한다.
@@ -169,8 +369,8 @@ void createBlock(Tetris* te)
 	te->x = (BOARD_WIDTH + WALLSIZE * 2) / 2 - 2; //x,y 초기화
 	te->y = 0; 
 
-	//te->whichBlock = rand() % 7; //whichBlock은 0~6사이의 값
-	te->whichBlock = 0;
+	te->whichBlock = rand() % BLOCK_NUM; //whichBlock은 0~6사이의 값
+	//te->whichBlock = 0;
 	te->blockState = 0; //회전상태를 초기값으로
 }
 
@@ -216,12 +416,11 @@ int moveDown(Tetris* te)
 		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
 		te->y--;//좌표를 돌려놓음
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-
+		//full line 확인
 		//바닥에 도달 -> board(배경)을 bpb으로 초기화
 		pasteBoard(te->board,te->boPlusbl);
 		createBlock(te);
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
-		//full line 확인
 		//game over 확인
 
 		return 0;//실패
@@ -256,10 +455,30 @@ int spaceMove(Tetris* te)
 	pasteBoard(te->boPlusbl,te->board); //bpb 원위치
 	te->y--;//좌표를 돌려놓음
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+	//lineErase
+	
+
 
 	//바닥에 도달 -> board(배경)을 bpb으로 초기화
 	pasteBoard(te->board,te->boPlusbl);
 	createBlock(te);
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
+	//gameOver
 	return 1; //성공
+}
+
+
+//Precondition : bPb와 y가 적절한 값으로 초기화 되어 있다.
+//설명 : y-1번~0번 줄에 있는 값을 y번~1번의 줄로 복사 붙여넣기 해준다.
+//Postcondition : None
+//return : None
+void moveBoardDown(int**bPb, int y)
+{
+   int i, j;
+   for( i = 0 ; i < y ; i++){
+      if( y-1 < 1 )break;
+      for( j = 0 ; j < BOARD_WIDTH; j++){
+         bPb[y - i][j+WALLSIZE] = bPb[y-1 - i][j+WALLSIZE];   //y-1 줄에 있는 걸 y줄에 복사, y-2줄에 있는 걸 y-1줄에 복사, .. 0줄에 있는 걸 1줄에 복사.
+      }
+   }
 }
