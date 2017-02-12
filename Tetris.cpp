@@ -1,5 +1,7 @@
 #include "Tetris.h"
 #include <stdio.h>
+#include <assert.h>
+#include <malloc.h>
 
 int block[][4][4][4]=
 { //블럭 4차원 배열 첫번쨰배열인덱스: 블럭의 종류 두번째배열인덱스 :블럭의 회전
@@ -83,7 +85,36 @@ void pasteBoard(int**bPb, int** bo,int x,int y)
 //함수설명 : 게임에 대한 변수를 초기상태로 설정한다.
 //te->board, te->boPlusbl 2차원배열 동적할당
 //te->socre = 0 , te->blockState = 0, whichBlock = 랜덤 설정
-void initGame(Tetris* te){}
+void initGame(Tetris* te)
+{
+	int i, j;
+	te->x = (BOARD_WIDTH + WALLSIZE * 2) / 2 - 2;
+	te->y = 0;
+	te->board = (char **)calloc(1, sizeof(char *)*(BOARD_HEIGHT + WALLSIZE));
+	assert(te->board != NULL);
+	te->boPlusbl = (char **)calloc(1, sizeof(char *)*(BOARD_HEIGHT + WALLSIZE));
+	assert(te->boPlusbl != NULL);
+	te->gameState = GAME_OVER;
+	te->blockState = 0; //회전 4가지모양 
+	te->whichBlock = 0;// 배열의 첫번째 index 7가지
+	te->score = 0;
+
+	for (i = 0; i < BOARD_HEIGHT + WALLSIZE; i++)
+	{
+		te->board[i] = (char *)calloc(1, sizeof(char)*(BOARD_WIDTH + (WALLSIZE * 2)));
+		te->boPlusbl[i]= (char *)calloc(1, sizeof(char)*(BOARD_WIDTH + (WALLSIZE * 2)));
+	}
+
+	for (i = 0; i < BOARD_HEIGHT + WALLSIZE; i++)
+	{
+		for (j = 0; j < (BOARD_WIDTH + (WALLSIZE * 2)); j++)
+		{
+			if (j < WALLSIZE || j >= BOARD_WIDTH + WALLSIZE) { te->board[i][j] = te->boPlusbl[i][j] = 1; }
+			if (i >= BOARD_HEIGHT)
+				te->board[i][j] = te->boPlusbl[i][j] = 1;
+		}
+	}
+}
 
 
 //함수명 : crushCheck
