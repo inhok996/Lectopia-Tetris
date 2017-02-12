@@ -17,6 +17,7 @@ int menu();
 
 #define COMMON_KEY 1 
 #define SPECIAL_KEY 0 
+#define SPACE 32
 #define UP_ARROW 72 
 #define DOWN_ARROW 80 
 #define LEFT_ARROW 75 
@@ -62,7 +63,9 @@ int main()
 		startX = menu();
 		system("cls");
 
-		if (startX == 28);//게임시작함수
+		if (startX == 28){//게임시작함수
+			gamePlaying();
+		}
 		else if (startX == 48)
 		{ 
 			fp = fileOpen("c://data//tetrisRanking.txt", "rt");
@@ -207,4 +210,31 @@ void textcolor(int foreground, int background)
 {
 	int color = foreground + background * 16;//foreground 글자색, background 배경색
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void gamePlaying(){
+
+	Tetris tetris;
+	char ch;//사용자로부터 키보드입력 임시저장 변수
+	int kFlag;//inKey()로부터 kFlag리턴
+
+	initGame(&tetris);
+
+	system("cls");
+	printf("Game Start!!!! Press Any Key\n");
+	getch();
+	tetris.gameState = PLAYING;
+	system("cls");
+	while(tetris.gameState){
+		printBoard(tetris.boPlusbl);
+		ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
+		switch(ch){
+		case LEFT_ARROW: break;
+		case RIGHT_ARROW: break;
+		case UP_ARROW: break;
+		case DOWN_ARROW: break;
+		case SPACE: break;
+		case ESC: break;
+		}
+	}
 }
