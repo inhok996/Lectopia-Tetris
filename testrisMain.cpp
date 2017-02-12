@@ -2,6 +2,8 @@
 #include<conio.h>
 #include<windows.h>
 #include <assert.h>
+#include <stdlib.h> //random 함수
+#include <time.h> //time 함수
 #include "linkedList.h"
 #include "person.h"
 #include "Tetris.h"
@@ -54,7 +56,7 @@ int main()
 	char str[101];//랭크불러오기에서 이름잠시저장배열
 	int end;//랭크불러오기에서 종료조건	
 	int sScore;//랭크불러오기에서 점수잠시저장배열
-
+	srand((unsigned int)time(NULL)); //랜덤함수 seed값 초기화
 	create(&lp);
 	
 	while (1)
@@ -219,21 +221,23 @@ void gamePlaying(){
 	int kFlag;//inKey()로부터 kFlag리턴
 
 	initGame(&tetris);
-
+	createBlock(&tetris);
+	pasteBlock(tetris.boPlusbl,block[tetris.whichBlock][tetris.blockState],tetris.x,tetris.y);
 	system("cls");
 	printf("Game Start!!!! Press Any Key\n");
 	getch();
 	tetris.gameState = PLAYING;
 	system("cls");
 	while(tetris.gameState){
+		system("cls");
 		printBoard(tetris.boPlusbl);
 		ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
 		switch(ch){
-		case LEFT_ARROW: break;
-		case RIGHT_ARROW: break;
-		case UP_ARROW: break;
-		case DOWN_ARROW: break;
-		case SPACE: break;
+		case LEFT_ARROW:moveLeft(&tetris); break;
+		case RIGHT_ARROW:moveRight(&tetris); break;
+		case UP_ARROW: rotate(&tetris); break;
+		case DOWN_ARROW: moveDown(&tetris); break;
+		case SPACE: spaceMove(&tetris); break;
 		case ESC: break;
 		}
 	}
