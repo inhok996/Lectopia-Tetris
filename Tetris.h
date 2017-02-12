@@ -1,3 +1,4 @@
+#pragma once
 #define BOARD_HEIGHT 20
 #define BOARD_WIDTH 10
 #define BLOCK_HEIGHT 4
@@ -16,7 +17,7 @@ typedef struct _tetris{
 	int gameState; // 현재 게임 상태 0 GAMEOVER, 1 PLAYING, 2 PAUSE, 3 READY
 	int blockState; //블럭 회전 카운트
 	int whichBlock; //블럭 모양
-	int nextBlock; //다음 블럭 모양 저장
+	int NextBlock; //다음블럭////////////////////////////////////////////////////////////////
 	int score; //현재 게임 점수
 }Tetris;
 
@@ -76,11 +77,11 @@ int lineErase(int** bpb, int y);
 //return : None
 void gameOver(Tetris* Te);
 
-//함수명 : createBlock
-//Precondition : Tetris 구조체의 값이 적절히 차 있다.
-//설명 : 랜덤으로 블럭을 생성한다.
-//Postcondition : Te->whichBlock = rand();, blockState = 0 으로 초기화된다.
-//return : None
+//함수명 : createBlock 
+//Precondition : Tetris 구조체의 값이 적절히 차 있다. 
+//설명 : 랜덤으로 블럭을 생성한다. 
+//Postcondition : Te->whichBlock = rand();, blockState = 0 으로 초기화된다. 
+//return : None 
 void createBlock(Tetris* Te);
 
 
