@@ -380,6 +380,7 @@ int gamePlaying() {
 	pasteBlock(cte.CboPlusbl, cte.cBlock, cte.tetris.x, cte.tetris.y);
 	while (cte.tetris.gameState) {
 		if (moved) { //이동이 일어나면
+			CmakeGhost(&cte);
 			gameDisplay(&cte, gameStartX + 2, gameStartY);
 			nextBlockDisplay(&cte, gameStartX + 5, gameStartY + 1);
 			scoreDisplay(cte.tetris.score, gameStartX, gameStartY);
@@ -439,7 +440,7 @@ void gameDisplay(CTetris * cte, int startX, int startY)
 		{
 			switch (cte->CboPlusbl[i][WALLSIZE + j])
 			{
-			case 1:printf("■"); break;
+			case 1:textcolor(15, 7); printf("□"); textcolor( 15, 0); break;
 			case 2:textcolor(15, 4); printf("■"); textcolor(15, 0); break;
 			case 3:textcolor(15, 6); printf("■"); textcolor(15, 0); break;
 			case 4:textcolor(15, 14); printf("■"); textcolor(15, 0); break;
