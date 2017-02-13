@@ -90,9 +90,8 @@ int main()
 		}
 		if (startX == 48)//랭크함수
 		{
-			if (sScore>0)
+			if (sScore > 0)
 			{
-		
 				fp = fileOpen("c://data//tetrisRanking.txt", "at");
 				assert(fp != NULL);
 				rankPerson.score = sScore;
@@ -104,46 +103,48 @@ int main()
 				printf("┗━━━━━━━━━━━━━━━━━━━━━┛");
 				gotoxy(76, 11);//열, 행
 				input(str);
+				//scanf("%s", str);
 				printf("\n");
 
 				rankPerson.name = str;
 				np = linearSearchUnique(&lp, &rankPerson, personNameCompare);
 				//찾은 노드의 주소 리턴
-				//if (lp.cur == NULL) 
-				//{
+				if (np == NULL)
+				{
 					fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
-					appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);				
-				//}
-				//else//중복단어 찾으면,
-				//{
-					//res = personScoreCompare((Person *)np + 1, rankPerson.name);
-					//if (res > 0)//새로받은 게 크면
-					//	((Person *)np + 1)->score = sScore;
-					//fp = fileOpen("c://data//terisRanking.txt", "wt");
+					appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);
+				}
+				else//중복단어 찾으면,
+				{
+					res = personScoreCompare((Person *)np + 1, &rankPerson);
+					if (res > 0)
+					{//새로받은 게 크면
+						((Person *)np + 1)->score = sScore;
+						fp = fileOpen("c://data//tetrisRanking.txt", "wt");
 
-					//lp.cur = lp.head->next;
-					//while (lp.cur != lp.tail)
-					//{
-					//	fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
-					//	lp.cur = lp.cur->next;
-					//}
-				//}			
+						lp.cur = lp.head->next;
+						while (lp.cur != lp.tail)
+						{
+							fprintf(fp, "%s %d\n", ((Person *)lp.cur + 1)->name, ((Person *)lp.cur + 1)->score);
+							lp.cur = lp.cur->next;
+						}
+					}
+				}
 				fclose(fp);
-				
-			}
-			sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
+				sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
 
-			system("cls");
-			gotoxy(35, 5);//열, 행
-			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
-			scoreRes = scorePrint(&lp, str);
-			gotoxy(35, 6 + scoreRes);//열, 행
-			printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
-			printf("다음으로 넘어가려면 아무key나 누르시오");
-			getch();
-			system("cls");
-			sScore = 0;
-		}//랭크함수
+				system("cls");
+				gotoxy(35, 5);//열, 행
+				printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
+				scoreRes = scorePrint(&lp, str);
+				gotoxy(35, 6 + scoreRes);//열, 행
+				printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+				printf("다음으로 넘어가려면 아무key나 누르시오");
+				getch();
+				system("cls");
+				sScore = 0;
+			}//랭크함수
+		}
 		else
 		{
 			destroy(&lp, personClear);
@@ -180,7 +181,7 @@ void input(char * str)
 		}
 		if (c == 13)break;
 	}
-	str[5] = '\0';
+	str[i-1] = '\0';
 	gotoxy(30, 30);
 }
 
