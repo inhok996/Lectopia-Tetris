@@ -1,60 +1,68 @@
+/*
+* person.cpp
+*
+*  Created on: 2017. 2. 7.
+*      Author: sky93
+*/
 #include "person.h"
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
-#include <string.h>
 
-void personMemCpy(void *p1, void *p2)
+void personMemCpy(void *p1, void *p2) //if문 하나로 수정가능, free를 맨 앞에
 {
-	char str[100];
-	strcpy(str, ((Person *)p2)->name);
-	strcpy(((Person *)p1)->name, str);
+	if (((Person *)p1)->name == NULL && ((Person *)p2)->name != NULL)
+	{
+		((Person *)p1)->name = (char *)malloc(sizeof(char) * strlen(((Person *)p2)->name) + 1);
+		//(char *)calloc(strlen(((Person*)p2)->name)+1, sizeof(char));
+		strcpy(((Person *)p1)->name, ((Person *)p2)->name);
+	}
+	else if (((Person *)p1)->name != NULL && ((Person *)p2)->name == NULL)
+	{
+		free(((Person *)p1)->name);
+		((Person *)p1)->name = NULL;
+	}
+	else if (((Person *)p1)->name == NULL && ((Person *)p2)->name == NULL);
+	else
+	{
+		free(((Person *)p1)->name);
+		((Person *)p1)->name = (char *)malloc(sizeof(char) * strlen(((Person *)p2)->name) + 1);
+		strcpy(((Person *)p1)->name, ((Person *)p2)->name);
+	}
+
 	((Person *)p1)->score = ((Person *)p2)->score;
-	return;
-//	personClear(p1); //name 멤버의 메모리 해제
-//	if (((Person *)p2)->name != NULL)
-//	{
-//		((Person )p1)->name = (char *)calloc(strlen(((Person *)p2)->name) + 1, sizeof(char));
-//		//p2로 해야한다!! p1의 name을 구해버리면 os 메모리 구하다가 프로세스킬당함, NULL문자 +1해야
-//		strcpy(((Person*)p1)->name, ((Person *)p2)->name);
-//	}
-//	((Person *)p1)->score = ((Person *)p2)->score;
-//	return;
 }
-void personClear(void *p) //안에 있던 내용 전부 지우고 -> 메모리 해제 -> NULL, 0, ""등으로 표시
+
+void personClear(void *p)
 {
-	/*if (((Person *)p)->name != NULL)
-		free(((Person *)p)->name);
-	((Person *)p)->name = 0;*/
+	if (((Person *)p)->name != NULL) {
+		memset(((Person*)p)->name, 0, strlen(((Person*)p)->name));
+		free(((Person*)p)->name);
+		((Person*)p)->name = NULL;
+	}
+	((Person*)p)->score = 0;
+
 	return;
 }
 void personPrint(void *p)
 {
-	printf("\n\n\n\t\t성명 : %-20s 점수 : %d\n", ((Person *)p)->name, ((Person *)p)->score);
-	printf("\n");
+	printf("┃  성명 : %-20s점수 : %-4d┃\n", ((Person*)p)->name, ((Person*)p)->score);
 }
-int personNameCompare(void *p1, void *p2)//이름 같으면 저장 못하게
+int personNameCompare(void *p1, void *p2)
 {
-	int res, rr;
-	res = strcmp(((Person *)p1)->name, ((Person *)p2)->name);
-	if (res > 0) rr = 1;
-	else if (res == 0) rr = 0;
-	else rr = -1;
-
-	return rr;
+	return strcmp(((Person*)p1)->name, ((Person*)p2)->name);
 }
 int personScoreCompare(void *p1, void *p2)
 {
 
-	if (((Person *)p1)->score > ((Person *)p2)->score) return 1;
-	else if (((Person *)p1)->score == ((Person *)p2)->score) return 0;
-	else return -1;
+	if (((Person*)p1)->score < ((Person*)p2)->score)
+		return 1;
+	else if (((Person*)p1)->score == ((Person*)p1)->score)
+		return 0;
+	else
+		return -1;
 }
-int personCompare(void *p1, void *p2)//쓰지 않아
+int personComapare(void *p1, void *p2)
 {
-	if (strcmp(((Person *)p1)->name, ((Person *)p2)->name) == 0)
-	{
-		if (((Person *)p1)->score == ((Person *)p2)->score)	return 0;
-		else return -1;
-	}
+	if (personNameCompare(p1, p2) == 0 && personScoreCompare(p1, p2) == 0)
+		return 0;
+	else
+		return -1;
 }
