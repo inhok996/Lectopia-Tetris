@@ -6,7 +6,7 @@
 
 typedef struct _person
 {
-	char name[20];
+	char *name;
 	int score;
 }Person;
 //typedef Person DataType;
