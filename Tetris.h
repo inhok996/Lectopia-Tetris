@@ -9,6 +9,10 @@
 #define PLAYING 1 //gameState
 #define PAUSE 2 //gameState
 #define READY 3 //gameState
+#include <stdio.h>
+#include <assert.h>
+#include <malloc.h>
+#include <stdlib.h>
 
 extern int block[][4][4][4];
 
