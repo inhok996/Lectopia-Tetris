@@ -7,7 +7,7 @@
 #include "linkedList.h"
 #include "person.h"
 #include "Tetris.h"
-//#include "CTetris.h"
+#include "CTetris.h"
 #pragma warning (disable:4996)
 FILE * fileOpen(char *filename, char *mode);
 void gotoxy(int x, int y);
@@ -21,8 +21,6 @@ void dataFileLoad(LinkedList *lp);
 int scorePrint(LinkedList *lp, char *str);
 //void fileSave();
 void input(char * str);
-void backGroundDisplay(int startX, int startY);
-void BlockDisplay(Tetris * te);
 void removeCursor(void); //Ä¿¼­±ôºýÀÌ Á¦°Å
 
 #define COMMON_KEY 1 
@@ -403,39 +401,6 @@ int gamePlaying(){
 	system("cls");
 	//Á¡¼öÀÔ·Â¶õ
 	return tetris.score;
-}
-
-void backGroundDisplay(int startX, int startY)
-{
-	//¸Ç À­ ÁÙ Âï±â
-	int i; //index
-	gotoxy(startX, startY);
-	printf("¦®");
-	for (i = 0; i < BOARD_WIDTH + 5; i++) printf("¦¬");
-	printf("¦¯");
-	for (i = startY; i < BOARD_HEIGHT; i++){
-		gotoxy(startX, i + 1);
-		printf("¦­                              ¦­");
-	}
-	gotoxy(startX, i);
-	printf("¦±");
-	for (i = 0; i < BOARD_WIDTH + 5; i++) printf("¦¬");
-	printf("¦°");
-}
-
-void BlockDisplay(Tetris * te)
-{
-	for (int i = 0; i< BLOCK_HEIGHT; i++)
-	{
-		gotoxy(2, te->y + i);
-		for (int j = 0; j < BOARD_WIDTH; j++)
-		{
-			if (te->boPlusbl[i][j] == 1)
-				putchar('¡á');
-			else if (te->boPlusbl[i][j] == 0)
-				putchar('¡à');
-		}
-	}
 }
 
 void removeCursor(void)
