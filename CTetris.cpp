@@ -143,6 +143,7 @@ int CspaceMove(CTetris* cte)
 void CmakeGhost(CTetris* cte)
 {
 	int tempy = cte->tetris.y;
+	int ghostBlk[BLOCK_HEIGHT][BLOCK_WIDTH];
 	while(!crashCheck(cte->tetris.boPlusbl,cte->tetris.x,tempy)){ //충돌 안할 때
 		pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 		tempy++; //좌표이동
@@ -151,9 +152,22 @@ void CmakeGhost(CTetris* cte)
 	//충돌 이후
 	pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //bpb 원위치
 	tempy--;//좌표를 돌려놓음
-	pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y); //block 붙이기
-	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y);
-
+	for(int i = 0 ; i < BLOCK_HEIGHT; i++){ //block Coloring
+		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
+			ghostBlk[i][j] = block[cte->tetris.whichBlock][cte->tetris.blockState][i][j];
+			if(ghostBlk[i][j] == 1) ghostBlk[i][j] = 1;//ghost Block은 9로 설정
+		}
+	}
+	CblockColoring(cte);
+	pasteBlock(cte->CboPlusbl,ghostBlk,cte->tetris.x,tempy);
+	if(tempy <= cte->tetris.y + 4){ //Ghost와 블럭이 겹치는 구간
+		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //block도 바꿔줌
+		for(int i = cte->tetris.y ; i < cte->tetris.y + BLOCK_HEIGHT; i++){ //block Coloring
+			for(int j = cte->tetris.x ; j < cte->tetris.y + BLOCK_WIDTH ; j++){
+				if(cte->CboPlusbl[i][j] > cte->tetris.whichBlock + 2) cte->CboPlusbl[i][j] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
+			}
+		}
+	}
 }
 
 void CgameOver(CTetris* cte)
