@@ -155,7 +155,7 @@ void CmakeGhost(CTetris* cte)
 	for(int i = 0 ; i < BLOCK_HEIGHT; i++){ //block Coloring
 		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
 			ghostBlk[i][j] = block[cte->tetris.whichBlock][cte->tetris.blockState][i][j];
-			if(ghostBlk[i][j] == 1) ghostBlk[i][j] = 1;//ghost Block은 9로 설정
+			if(ghostBlk[i][j] == 1) ghostBlk[i][j] = 1;//ghost Block은 1로 설정
 		}
 	}
 	CblockColoring(cte);
@@ -164,7 +164,9 @@ void CmakeGhost(CTetris* cte)
 		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //block도 바꿔줌
 		for(int i = cte->tetris.y ; i < cte->tetris.y + BLOCK_HEIGHT; i++){ //block Coloring
 			for(int j = cte->tetris.x ; j < cte->tetris.y + BLOCK_WIDTH ; j++){
-				if(cte->CboPlusbl[i][j] > cte->tetris.whichBlock + 2) cte->CboPlusbl[i][j] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
+				if(ghostBlk[i-cte->tetris.y][j-cte->tetris.x]) //블럭구간만 체크
+					if(cte->CboPlusbl[i][j] > cte->tetris.whichBlock + 2) 
+						cte->CboPlusbl[i][j] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
 			}
 		}
 	}
