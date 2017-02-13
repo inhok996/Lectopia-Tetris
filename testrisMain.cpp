@@ -13,10 +13,14 @@ FILE * fileOpen(char *filename, char *mode);
 void gotoxy(int x, int y);
 char inKey(int *keyFlag);
 void box(int startX);
-void gamePlaying();//게임시작함수
+int gamePlaying();//게임시작함수
 void textcolor(int foreground, int background);
+int scorePrint(LinkedList *lp);
 int menu();
+void dataFileLoad(LinkedList *lp);
+int scorePrint(LinkedList *lp, char *str);
 //void fileSave();
+
 void backGroundDisplay(int startX, int startY);
 void BlockDisplay(Tetris * te);
 void removeCursor(void); //커서깜빡이 제거
@@ -49,57 +53,76 @@ void removeCursor(void); //커서깜빡이 제거
 #define YELLOW 14
 #define WHITE 15
 
-
 int main()
 {
-	char ch;//사용자로부터 키보드입력 임시저장 변수
-	int kFlag;//inKey()로부터 kFlag리턴
+	//char ch;//사용자로부터 키보드입력 임시저장 변수
+	//int kFlag;//inKey()로부터 kFlag리턴
 	int startX = 28;//무빙박스의 처음 시작
 	FILE *fp;
 	LinkedList lp;
-	Person rankPerson;
-	char str[101];//랭크불러오기에서 이름잠시저장배열
-	int end;//랭크불러오기에서 종료조건	
-	int sScore;//랭크불러오기에서 점수잠시저장배열
+	Person rankPerson; 
+	Node *np;
+	char str[101] = { 0 };//랭크불러오기에서 이름잠시저장배열
+	//int end;//랭크불러오기에서 종료조건	
+	int sScore = 0;//랭크불러오기에서 점수잠시저장배열
+	int scoreRes;
 	srand((unsigned int)time(NULL)); //랜덤함수 seed값 초기화
+
 	create(&lp);
+	dataFileLoad(&lp);
 	removeCursor();//커서 깜빡이 제거
 	
 	while (1)
 	{
+		startX = 28;
 		box(startX);//처음에 박스가 보이기 위해
 		startX = menu();
 		system("cls");
 
 		if (startX == 28){//게임시작함수
-			gamePlaying();
+			sScore = gamePlaying();		
+			startX = 48;
 		}
-		else if (startX == 48)
+		if (startX == 48)//랭크함수
 		{ 
-			fp = fileOpen("c://data//tetrisRanking.txt", "rt");
-			assert(fp != NULL);
-			//printf("1");
-			while (1){
-				end = fscanf(fp, "%s", str);
-				fscanf(fp, "%d", &sScore);//fgets(0으로 해야할까
-				//end = fgets(str, 100, fp);
+			if (sScore>0) 
+			{
+				fp = fileOpen("c://data//tetrisRanking.txt", "at");
+				assert(fp != NULL);
+				rankPerson.score = sScore;
+				gotoxy(40, 10);//열, 행
+				printf("┏━━━━━━━━━━━━━━━━━━━━━┓\n");
+				gotoxy(40, 11);//열, 행
+				printf("  TOTAL SCORE : %-8d YOUR NAME :           \n");
+				gotoxy(40, 12);//열, 행
+				printf("┗━━━━━━━━━━━━━━━━━━━━━┛");
+				gotoxy(76, 11);//열, 행
+				scanf("%s", str);
+				printf("\n");
 
-				if (str[strlen(str) - 1] == '\n')
-					str[strlen(str) - 1] = '\0';
-				if (NULL == linearSearchUnique(&lp, str, personNameCompare))
+				rankPerson.name = str;
+				//strcpy(rankPerson.name, str);
+				fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
+				fclose(fp);
+				np = linearSearchUnique(&lp, &rankPerson, personNameCompare);
+				if (np == NULL) appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);
+				else//중복단어 찾으면,
 				{
-					strcpy(rankPerson.name, str);
-					rankPerson.score = sScore;
-					appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);
+					//npscore = rankPerson.score;
 				}
-				if (end == EOF)
-					break;
 			}
-			//sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
-			display(&lp, personPrint);
-			system("pause");
+			sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
+
 			system("cls");
-			continue; 
+			gotoxy(35, 5);//열, 행
+			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");		
+			scoreRes = scorePrint(&lp, str);
+			gotoxy(35, 6 + scoreRes);//열, 행
+			printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+			printf("다음으로 넘어가려면 아무key나 누르시오");
+			getch();
+			system("cls");
+			sScore = 0;
 		}//랭크함수
 		else
 		{
@@ -108,6 +131,66 @@ int main()
 		}
 	}	
 	return 0;
+}
+
+int scorePrint(LinkedList *lp, char *str)
+{
+	Node *np;
+	int i, j = 0;
+	//if (lp->length == 0)return i;
+	np = lp->head->next;
+	for (i = 0; i < lp->length; i++)
+	{
+
+		gotoxy(35, 6 + i);
+		printf("┃  성명 : ");
+		textcolor(LIGHTBLUE + j, BLACK);
+		if (strcmp(((Person *)np + 1)->name, str) == 0)textcolor(13, BLACK);
+		gotoxy(45, 6 + i);
+		printf("%-20s", ((Person *)np + 1)->name);
+		gotoxy(55, 6 + i);
+		textcolor(LIGHTGRAY, BLACK);
+		printf("점수 : ");
+		gotoxy(65, 6 + i);
+		textcolor(LIGHTBLUE + j, BLACK);
+		if (strcmp(((Person *)np + 1)->name, str) == 0)textcolor(13, BLACK);
+		printf("%-10d", ((Person *)np + 1)->score);
+		gotoxy(83, 6 + i);
+		textcolor(LIGHTGRAY, BLACK);
+		printf("┃\n");
+		np = np->next;
+		if (j < 2) { j++; }
+		else
+			j = 6;
+	}
+	return i;
+}
+
+void dataFileLoad(LinkedList *lp) // 데이터 파일내의 데이터를 리스트에 저장 
+{
+	FILE *fp;
+	Person inData; //DataType은 Person 구조체 타입
+	char name[20];
+
+	fp = fopen("c:\\data\\tetrisRanking.txt", "rt");
+	assert(fp != NULL);
+
+	while (fscanf(fp, "%s", name) != EOF) //inData는 완벽한 데이터가 들어와야함
+	{
+		inData.name = (char *)malloc(sizeof(char)*strlen(name) + 1);
+		assert(inData.name != NULL);
+
+		fscanf(fp, "%d", &inData.score); //나이를 읽어옴
+
+		strcpy(inData.name, name);
+
+		appendFromHead(lp, &inData, sizeof(Person), personMemCpy); //lp는 링크드리스트 관리구조체, inData의 시작주소를 보냄
+		//appendFromTail(lp, &inData);
+
+		free(inData.name);
+	}
+	fclose(fp); //파일 닫기! 
+	//tail노드 앞에 노드가 생김
 }
 
 int menu()
@@ -220,7 +303,7 @@ void textcolor(int foreground, int background)
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-void gamePlaying(){
+int gamePlaying(){
 	Tetris tetris;
 	char ch;//사용자로부터 키보드입력 임시저장 변수
 	int kFlag;//inKey()로부터 kFlag리턴
@@ -272,7 +355,7 @@ void gamePlaying(){
 	getch();
 	system("cls");
 	//점수입력란
-	
+	return tetris.score;
 }
 
 void backGroundDisplay(int startX,int startY)
