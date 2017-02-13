@@ -1,195 +1,195 @@
 #include "Tetris.h"
 
 
-int block[][4][4][4]=
+int block[][4][4][4] =
 { //블럭 4차원 배열 첫번쨰배열인덱스: 블럭의 종류 두번째배열인덱스 :블럭의 회전
 	{
 		{
-			{0,0,0,0}, 
-			{1,0,0,0}, 
-			{1,1,1,0}, 
-			{0,0,0,0}, 
+			{ 0, 0, 0, 0 },
+			{ 1, 0, 0, 0 },
+			{ 1, 1, 1, 0 },
+			{ 0, 0, 0, 0 },
 		},
 		{
-			{0,0,1,0}, 
-			{0,0,1,0}, 
-			{0,1,1,0}, 
-			{0,0,0,0}, 
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 0, 0 },
 		},
 		{
-			{1,1,1,0}, 
-			{0,0,1,0}, 
-			{0,0,0,0}, 
-			{0,0,0,0}, 
+			{ 1, 1, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
 		},
 		{
-			{1,1,0,0}, 
-			{1,0,0,0}, 
-			{1,0,0,0}, 
-			{0,0,0,0}, 
+			{ 1, 1, 0, 0 },
+			{ 1, 0, 0, 0 },
+			{ 1, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
 		}
 	},
 	{
 		{
-			{0,0,0,0}, 
-			{0,1,0,0},
-			{1,1,1,0}, 
-			{0,0,0,0}
-		},   
-		{ 
-			{0,0,0,0}, 
-			{0,1,0,0}, 
-			{1,1,0,0}, 
-			{0,1,0,0} 
-		},    
-		{ 
-			{0,0,0,0}, 
-			{0,0,0,0}, 
-			{1,1,1,0}, 
-			{0,1,0,0} 
-		},    
+			{ 0, 0, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 1, 1, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 1, 0, 0 }
+		},
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 1, 1, 1, 0 },
+			{ 0, 1, 0, 0 }
+		},
 
-		{ 
-			{0,0,0,0}, 
-			{0,1,0,0}, 
-			{0,1,1,0}, 
-			{0,1,0,0} 
-		}, 
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 1, 0, 0 }
+		},
 	},
 	{
 		{
-			{0,0,0,0}, 
-			{0,0,1,0},
-			{1,1,1,0}, 
-			{0,0,0,0}
-		},   
-		{ 
-			{0,1,1,0}, 
-			{0,0,1,0}, 
-			{0,0,1,0}, 
-			{0,0,0,0} 
-		},    
-		{ 
-			{1,1,1,0}, 
-			{1,0,0,0}, 
-			{0,0,0,0}, 
-			{0,0,0,0} 
-		},    
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 1, 0 },
+			{ 1, 1, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 1, 1, 1, 0 },
+			{ 1, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 
-		{ 
-			{1,0,0,0}, 
-			{1,0,0,0}, 
-			{1,1,0,0}, 
-			{0,0,0,0} 
-		}, 
+		{
+			{ 1, 0, 0, 0 },
+			{ 1, 0, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 	},
 	{
 		{
-			{0,1,0,0}, 
-			{0,1,0,0},
-			{0,1,0,0}, 
-			{0,1,0,0}
-		},   
-		{ 
-			{0,0,0,0}, 
-			{0,0,0,0}, 
-			{1,1,1,1}, 
-			{0,0,0,0} 
-		},    
-		{ 
-			{0,1,0,0}, 
-			{0,1,0,0}, 
-			{0,1,0,0}, 
-			{0,1,0,0} 
-		},    
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 }
+		},
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 1, 1, 1, 1 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 0, 0 }
+		},
 
-		{ 
-			{0,0,0,0}, 
-			{0,0,0,0}, 
-			{1,1,1,1}, 
-			{0,0,0,0} 
-		}, 
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 1, 1, 1, 1 },
+			{ 0, 0, 0, 0 }
+		},
 	},
 	{
 		{
-			{1,1,0,0}, 
-			{1,1,0,0},
-			{0,0,0,0}, 
-			{0,0,0,0}
-		},   
-		{ 
-			{1,1,0,0}, 
-			{1,1,0,0}, 
-			{0,0,0,0}, 
-			{0,0,0,0} 
-		},    
-		{ 
-			{1,1,0,0}, 
-			{1,1,0,0}, 
-			{0,0,0,0}, 
-			{0,0,0,0} 
-		},    
+			{ 1, 1, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 1, 1, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 1, 1, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 
-		{ 
-			{1,1,0,0}, 
-			{1,1,0,0}, 
-			{0,0,0,0}, 
-			{0,0,0,0} 
-		}, 
+		{
+			{ 1, 1, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 	},
 	{
 		{
-			{0,0,0,0}, 
-			{0,1,1,0},
-			{1,1,0,0}, 
-			{0,0,0,0}
-		},   
-		{ 
-			{0,1,0,0}, 
-			{0,1,1,0}, 
-			{0,0,1,0}, 
-			{0,0,0,0} 
-		},    
-		{ 
-			{0,0,0,0}, 
-			{0,1,1,0}, 
-			{1,1,0,0}, 
-			{0,0,0,0} 
-		},    
+			{ 0, 0, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 0, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 
-		{ 
-			{0,1,0,0}, 
-			{0,1,1,0}, 
-			{0,0,1,0}, 
-			{0,0,0,0} 
-		}, 
+		{
+			{ 0, 1, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
 	},
 	{
 		{
-			{0,0,0,0}, 
-			{1,1,0,0},
-			{0,1,1,0}, 
-			{0,0,0,0}
-		},   
-		{ 
-			{0,0,1,0}, 
-			{0,1,1,0}, 
-			{0,1,0,0}, 
-			{0,0,0,0} 
-		},    
-		{ 
-			{0,0,0,0}, 
-			{1,1,0,0}, 
-			{0,1,1,0}, 
-			{0,0,0,0} 
-		},    
+			{ 0, 0, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 0, 1, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
+		{
+			{ 0, 0, 0, 0 },
+			{ 1, 1, 0, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 0, 0, 0 }
+		},
 
-		{ 
-			{0,0,1,0}, 
-			{0,1,1,0}, 
-			{0,1,0,0}, 
-			{0,0,0,0} 
-		}, 
+		{
+			{ 0, 0, 1, 0 },
+			{ 0, 1, 1, 0 },
+			{ 0, 1, 0, 0 },
+			{ 0, 0, 0, 0 }
+		},
 	}
 };
 
@@ -202,10 +202,10 @@ int block[][4][4][4]=
 //return : None
 void printBoard(int** bo)
 {
-	for(int i = 0 ; i < BOARD_HEIGHT + 1; i++){
-		for(int j = WALLSIZE - 1 ; j < BOARD_WIDTH + WALLSIZE + 1; j++){
-			if(bo[i][j] == 1) printf("■");
-			else if(bo[i][j] ==2) printf("★");
+	for (int i = 0; i < BOARD_HEIGHT + 1; i++){
+		for (int j = WALLSIZE - 1; j < BOARD_WIDTH + WALLSIZE + 1; j++){
+			if (bo[i][j] == 1) printf("■");
+			else if (bo[i][j] == 2) printf("★");
 			else printf("  ");
 		}
 		printf("\n");
@@ -218,10 +218,10 @@ void printBoard(int** bo)
 //return : None
 void pasteBlock(int** bo, int(*bl)[4], int x, int y)
 {
-	for(int i = 0 ; i < BLOCK_HEIGHT; i++){
-		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
+	for (int i = 0; i < BLOCK_HEIGHT; i++){
+		for (int j = 0; j < BLOCK_WIDTH; j++){
 
-	bo[i+y][j+x] += bl[i][j];
+			bo[i + y][j + x] += bl[i][j];
 		}
 	}
 }
@@ -232,8 +232,8 @@ void pasteBlock(int** bo, int(*bl)[4], int x, int y)
 //return : None
 void pasteBoard(int**bPb, int** bo)
 {
-	for(int i = 0 ; i < BOARD_HEIGHT + WALLSIZE ; i++){
-		for(int j = 0 ; j < BOARD_WIDTH + (WALLSIZE * 2) ; j++){
+	for (int i = 0; i < BOARD_HEIGHT + WALLSIZE; i++){
+		for (int j = 0; j < BOARD_WIDTH + (WALLSIZE * 2); j++){
 			bPb[i][j] = bo[i][j];
 		}
 	}
@@ -262,7 +262,7 @@ void initGame(Tetris* te)
 	for (i = 0; i < BOARD_HEIGHT + WALLSIZE; i++)
 	{
 		te->board[i] = (int *)calloc(1, sizeof(int)*(BOARD_WIDTH + (WALLSIZE * 2)));
-		te->boPlusbl[i]= (int *)calloc(1, sizeof(int)*(BOARD_WIDTH + (WALLSIZE * 2)));
+		te->boPlusbl[i] = (int *)calloc(1, sizeof(int)*(BOARD_WIDTH + (WALLSIZE * 2)));
 	}
 
 	for (i = 0; i < BOARD_HEIGHT + WALLSIZE; i++)
@@ -289,7 +289,7 @@ int crashCheck(int** bpb, int x, int y)
 	{
 		for (j = 0; j < BLOCK_HEIGHT; j++)
 		{
-			if (bpb[y + i][x+ j] == 2)
+			if (bpb[y + i][x + j] == 2)
 				return true;
 		}
 	}
@@ -303,10 +303,10 @@ int crashCheck(int** bpb, int x, int y)
 //return : 1 (full line) , 0 (not full)
 int lineCheck(int** bPb, int y)
 {
-	for(int i=0;i<BOARD_WIDTH; i++)
+	for (int i = 0; i<BOARD_WIDTH; i++)
 	{
-		if(bPb[y][WALLSIZE+i] != 1  ||  y >= BOARD_HEIGHT  ) break;
-		if(i==BOARD_WIDTH-1) return 1;
+		if (bPb[y][WALLSIZE + i] != 1 || y >= BOARD_HEIGHT) break;
+		if (i == BOARD_WIDTH - 1) return 1;
 	}
 	return 0;
 }
@@ -319,14 +319,14 @@ int lineCheck(int** bPb, int y)
 int lineErase(int** bPb, int y)
 {
 	int i, j, k, cnt = 0;
-	for(i = 0; i < BLOCK_HEIGHT; i++)
+	for (i = 0; i < BLOCK_HEIGHT; i++)
 	{
-		if( lineCheck(bPb,y+i) )
+		if (lineCheck(bPb, y + i))
 		{
-			if( y+i >= BOARD_HEIGHT || (y+i) <1) break;
+			if (y + i >= BOARD_HEIGHT || (y + i) <1) break;
 			else{
-				cnt++; 
-				moveBoardDown(bPb, y+i);
+				cnt++;
+				moveBoardDown(bPb, y + i);
 			}
 		}
 	}
@@ -342,7 +342,7 @@ void gameOver(Tetris* te)
 {
 	int i;
 	for (i = 0; i < BOARD_WIDTH; i++)
-		if (te->boPlusbl[0][WALLSIZE+i] != 0)
+		if (te->boPlusbl[0][WALLSIZE + i] != 0)
 			te->gameState = GAME_OVER;
 	free(te->board);
 	free(te->boPlusbl);
@@ -360,7 +360,7 @@ void gameOver(Tetris* te)
 void createBlock(Tetris* te)
 {
 	te->x = (BOARD_WIDTH + WALLSIZE * 2) / 2 - 2; //x,y 초기화
-	te->y = 0; 
+	te->y = 0;
 
 	te->whichBlock = te->nextBlock;
 	te->nextBlock = rand() % BLOCK_NUM;
@@ -373,13 +373,13 @@ void createBlock(Tetris* te)
 //return : 1(성공), 0 실패
 int moveLeft(Tetris* te)
 {
-	pasteBoard(te->boPlusbl,te->board); //일단 움직이기 전에 bpb를 board로 초기화
+	pasteBoard(te->boPlusbl, te->board); //일단 움직이기 전에 bpb를 board로 초기화
 	te->x--; //좌표이동
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-	if(crashCheck(te->boPlusbl,te->x,te->y)){ //만약 충돌하면
-		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
+	if (crashCheck(te->boPlusbl, te->x, te->y)){ //만약 충돌하면
+		pasteBoard(te->boPlusbl, te->board); //bpb 원위치
 		te->x++;//좌표를 돌려놓음
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
 		return 0;//실패
 	}
 	return 1; //성공
@@ -388,13 +388,13 @@ int moveLeft(Tetris* te)
 //return : 1(성공) 0 실패
 int moveRight(Tetris* te)
 {
-	pasteBoard(te->boPlusbl,te->board); //일단 움직이기 전에 bpb를 board로 초기화
+	pasteBoard(te->boPlusbl, te->board); //일단 움직이기 전에 bpb를 board로 초기화
 	te->x++; //좌표이동
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-	if(crashCheck(te->boPlusbl,te->x,te->y)){ //만약 충돌하면
-		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
+	if (crashCheck(te->boPlusbl, te->x, te->y)){ //만약 충돌하면
+		pasteBoard(te->boPlusbl, te->board); //bpb 원위치
 		te->x--;//좌표를 돌려놓음
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
 		return 0;//실패
 	}
 	return 1; //성공
@@ -403,15 +403,15 @@ int moveRight(Tetris* te)
 //return : 1(성공) 0 실패
 int moveDown(Tetris* te)
 {
-	pasteBoard(te->boPlusbl,te->board); //일단 움직이기 전에 bpb를 board로 초기화
+	pasteBoard(te->boPlusbl, te->board); //일단 움직이기 전에 bpb를 board로 초기화
 	te->y++; //좌표이동
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-	if(crashCheck(te->boPlusbl,te->x,te->y)){ //만약 충돌하면
-		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
+	if (crashCheck(te->boPlusbl, te->x, te->y)){ //만약 충돌하면
+		pasteBoard(te->boPlusbl, te->board); //bpb 원위치
 		te->y--;//좌표를 돌려놓음
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
 		//lineErase
-		switch(lineErase(te->boPlusbl,te->y)){
+		switch (lineErase(te->boPlusbl, te->y)){
 		case 1: te->score += 10; break; //single score
 		case 2: te->score += 30; break; //double
 		case 3: te->score += 50; break; //triple
@@ -419,11 +419,11 @@ int moveDown(Tetris* te)
 		}
 
 		//바닥에 도달 -> board(배경)을 bpb으로 초기화
-		pasteBoard(te->board,te->boPlusbl);
+		pasteBoard(te->board, te->boPlusbl);
 		createBlock(te);
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y);
 		//game over 확인
-		if(crashCheck(te->boPlusbl,te->x,te->y)){ //새로생긴 블럭과 만약 충돌이면?
+		if (crashCheck(te->boPlusbl, te->x, te->y)){ //새로생긴 블럭과 만약 충돌이면?
 			te->gameState = GAME_OVER; //gamestate == GameOver
 		}
 
@@ -434,13 +434,13 @@ int moveDown(Tetris* te)
 int rotate(Tetris* te)
 {
 	int pre_blockstate = te->blockState;//이 전의 회전값을 저장
-	pasteBoard(te->boPlusbl,te->board); //일단 움직이기 전에 bpb를 board로 초기화
+	pasteBoard(te->boPlusbl, te->board); //일단 움직이기 전에 bpb를 board로 초기화
 	te->blockState = (te->blockState + 1) % 4;
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-	if(crashCheck(te->boPlusbl,te->x,te->y)){ //만약 충돌하면
-		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
+	if (crashCheck(te->boPlusbl, te->x, te->y)){ //만약 충돌하면
+		pasteBoard(te->boPlusbl, te->board); //bpb 원위치
 		te->blockState = pre_blockstate;
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
 		return 0;//실패
 	}
 	return 1; //성공
@@ -449,29 +449,29 @@ int rotate(Tetris* te)
 
 int spaceMove(Tetris* te)
 {
-	while(!crashCheck(te->boPlusbl,te->x,te->y)){ //충돌할때까지 체크
-		pasteBoard(te->boPlusbl,te->board); //움직이기 전 bPb를 배경으로/
+	while (!crashCheck(te->boPlusbl, te->x, te->y)){ //충돌할때까지 체크
+		pasteBoard(te->boPlusbl, te->board); //움직이기 전 bPb를 배경으로/
 		te->y++;//좌표 이동
-		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);//붙여넣음
+		pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y);//붙여넣음
 	}
 	//충돌 후에
-	pasteBoard(te->boPlusbl,te->board); //bpb 원위치
+	pasteBoard(te->boPlusbl, te->board); //bpb 원위치
 	te->y--;//좌표를 돌려놓음
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y); //block 붙이기
 	//lineErase
-	switch(lineErase(te->boPlusbl,te->y)){
+	switch (lineErase(te->boPlusbl, te->y)){
 	case 1: te->score += 10; break; //single score
 	case 2: te->score += 30; break; //double
 	case 3: te->score += 50; break; //triple
 	case 4: te->score += 100; break; //tetris
 	}
-	
+
 	//바닥에 도달 -> board(배경)을 bpb으로 초기화
-	pasteBoard(te->board,te->boPlusbl);
+	pasteBoard(te->board, te->boPlusbl);
 	createBlock(te);
-	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
+	pasteBlock(te->boPlusbl, block[te->whichBlock][te->blockState], te->x, te->y);
 	//gameOver
-	if(crashCheck(te->boPlusbl,te->x,te->y)){ //새로생긴 블럭과 만약 충돌이면?
+	if (crashCheck(te->boPlusbl, te->x, te->y)){ //새로생긴 블럭과 만약 충돌이면?
 		te->gameState = GAME_OVER; //gamestate == GameOver
 	}
 
@@ -486,11 +486,11 @@ int spaceMove(Tetris* te)
 //return : None
 void moveBoardDown(int**bPb, int y)
 {
-   int i, j;
-   for( i = 0 ; i < y ; i++){
-      if( y-1 < 1 )break;
-      for( j = 0 ; j < BOARD_WIDTH; j++){
-         bPb[y - i][j+WALLSIZE] = bPb[y-1 - i][j+WALLSIZE];   //y-1 줄에 있는 걸 y줄에 복사, y-2줄에 있는 걸 y-1줄에 복사, .. 0줄에 있는 걸 1줄에 복사.
-      }
-   }
+	int i, j;
+	for (i = 0; i < y; i++){
+		if (y - 1 < 1)break;
+		for (j = 0; j < BOARD_WIDTH; j++){
+			bPb[y - i][j + WALLSIZE] = bPb[y - 1 - i][j + WALLSIZE];   //y-1 줄에 있는 걸 y줄에 복사, y-2줄에 있는 걸 y-1줄에 복사, .. 0줄에 있는 걸 1줄에 복사.
+		}
+	}
 }
