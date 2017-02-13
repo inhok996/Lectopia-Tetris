@@ -1,8 +1,5 @@
 #include "Tetris.h"
-#include <stdio.h>
-#include <assert.h>
-#include <malloc.h>
-#include <stdlib.h>
+
 
 int block[][4][4][4]=
 { //블럭 4차원 배열 첫번쨰배열인덱스: 블럭의 종류 두번째배열인덱스 :블럭의 회전
@@ -356,7 +353,7 @@ void gameOver(Tetris* te)
 }
 
 //함수명 : createBlock 
-//Precondition : Tetris 구조체의 값이 적절히 차 있다., srand가 1회 이상 호출되어야 한다.
+//Precondition : Tetris 구조체의 값이 적절히 차 있다., srand가 1회 이상 호출되어야 한다. te->nextBlock은 최초 한번 이상 초기화 되어 있다.
 //설명 : 랜덤으로 블럭을 생성한다. 
 //Postcondition : Te->whichBlock = rand();, blockState = 0 으로 초기화된다. 
 //return : None 
@@ -365,7 +362,8 @@ void createBlock(Tetris* te)
 	te->x = (BOARD_WIDTH + WALLSIZE * 2) / 2 - 2; //x,y 초기화
 	te->y = 0; 
 
-	te->whichBlock = rand() % BLOCK_NUM; //whichBlock은 0~6사이의 값
+	te->whichBlock = te->nextBlock;
+	te->nextBlock = rand() % BLOCK_NUM;
 	//te->whichBlock = 0;
 	te->blockState = 0; //회전상태를 초기값으로
 }
