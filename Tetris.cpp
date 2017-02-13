@@ -412,7 +412,14 @@ int moveDown(Tetris* te)
 		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
 		te->y--;//좌표를 돌려놓음
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-		lineErase(te->boPlusbl,te->y);
+		//lineErase
+		switch(lineErase(te->boPlusbl,te->y)){
+		case 1: te->score += 10; break; //single
+		case 2: te->score += 30; break; //double
+		case 3: te->score += 50; break; //triple
+		case 4: te->score += 100; break; //tetris
+		}
+
 		//바닥에 도달 -> board(배경)을 bpb으로 초기화
 		pasteBoard(te->board,te->boPlusbl);
 		createBlock(te);
@@ -455,9 +462,13 @@ int spaceMove(Tetris* te)
 	te->y--;//좌표를 돌려놓음
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
 	//lineErase
-	lineErase(te->boPlusbl,te->y);
-
-
+	switch(lineErase(te->boPlusbl,te->y)){
+	case 1: te->score += 10; break; //single
+	case 2: te->score += 30; break; //double
+	case 3: te->score += 50; break; //triple
+	case 4: te->score += 100; break; //tetris
+	}
+	
 	//바닥에 도달 -> board(배경)을 bpb으로 초기화
 	pasteBoard(te->board,te->boPlusbl);
 	createBlock(te);
