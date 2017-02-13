@@ -7,6 +7,7 @@
 #include "linkedList.h"
 #include "person.h"
 #include "Tetris.h"
+//#include "CTetris.h"
 #pragma warning (disable:4996)
 FILE * fileOpen(char *filename, char *mode);
 void gotoxy(int x, int y);
@@ -220,15 +221,15 @@ void textcolor(int foreground, int background)
 }
 
 void gamePlaying(){
-
 	Tetris tetris;
 	char ch;//사용자로부터 키보드입력 임시저장 변수
 	int kFlag;//inKey()로부터 kFlag리턴
 	time_t prev; //자동으로 내려오는 시간을 구하기 위함
 	time_t cur; //현재시각
-	int moved = 1; //이동상태를 나타냄
+	int moved = 1; //move가 일어나면
 
 	initGame(&tetris);
+	tetris.nextBlock = rand() % BLOCK_NUM; //최초 NextBlock 생성 CreateBlock의 Precondition
 	createBlock(&tetris);
 	pasteBlock(tetris.boPlusbl,block[tetris.whichBlock][tetris.blockState],tetris.x,tetris.y);
 	system("cls");
@@ -274,7 +275,6 @@ void gamePlaying(){
 	
 }
 
-
 void backGroundDisplay(int startX,int startY)
 {
    //맨 윗 줄 찍기
@@ -313,11 +313,8 @@ void removeCursor(void)
 { 
 
         CONSOLE_CURSOR_INFO curInfo; 
-
         GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
-
         curInfo.bVisible=0; 
-
         SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
 
 } 
