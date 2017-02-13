@@ -20,11 +20,10 @@ int menu();
 void dataFileLoad(LinkedList *lp);
 int scorePrint(LinkedList *lp, char *str);
 //void fileSave();
-
+void input(char * str);
 void backGroundDisplay(int startX, int startY);
 void BlockDisplay(Tetris * te);
 void removeCursor(void); //커서깜빡이 제거
-
 
 #define COMMON_KEY 1 
 #define SPECIAL_KEY 0 
@@ -60,18 +59,19 @@ int main()
 	int startX = 28;//무빙박스의 처음 시작
 	FILE *fp;
 	LinkedList lp;
-	Person rankPerson; 
-	Node *np;
+	Person rankPerson;
+	void *np;
 	char str[101] = { 0 };//랭크불러오기에서 이름잠시저장배열
 	//int end;//랭크불러오기에서 종료조건	
 	int sScore = 0;//랭크불러오기에서 점수잠시저장배열
 	int scoreRes;
+	int res;
 	srand((unsigned int)time(NULL)); //랜덤함수 seed값 초기화
 
 	create(&lp);
 	dataFileLoad(&lp);
 	removeCursor();//커서 깜빡이 제거
-	
+
 	while (1)
 	{
 		startX = 28;
@@ -80,42 +80,57 @@ int main()
 		system("cls");
 
 		if (startX == 28){//게임시작함수
-			sScore = gamePlaying();		
+			sScore = gamePlaying();
 			startX = 48;
 		}
 		if (startX == 48)//랭크함수
-		{ 
-			if (sScore>0) 
+		{
+			if (sScore>0)
 			{
+		
 				fp = fileOpen("c://data//tetrisRanking.txt", "at");
 				assert(fp != NULL);
 				rankPerson.score = sScore;
 				gotoxy(40, 10);//열, 행
 				printf("┏━━━━━━━━━━━━━━━━━━━━━┓\n");
 				gotoxy(40, 11);//열, 행
-				printf("  TOTAL SCORE : %-8d YOUR NAME :           \n");
+				printf("  TOTAL SCORE : %-8d YOUR NAME :           \n", rankPerson.score);
 				gotoxy(40, 12);//열, 행
 				printf("┗━━━━━━━━━━━━━━━━━━━━━┛");
 				gotoxy(76, 11);//열, 행
-				scanf("%s", str);
+				input(str);
 				printf("\n");
 
 				rankPerson.name = str;
-				//strcpy(rankPerson.name, str);
-				fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
-				fclose(fp);
 				np = linearSearchUnique(&lp, &rankPerson, personNameCompare);
-				if (np == NULL) appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);
-				else//중복단어 찾으면,
-				{
-					//npscore = rankPerson.score;
-				}
+				//찾은 노드의 주소 리턴
+				//if (lp.cur == NULL) 
+				//{
+					fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
+					appendFromTail(&lp, &rankPerson, sizeof(Person), personMemCpy);				
+				//}
+				//else//중복단어 찾으면,
+				//{
+					//res = personScoreCompare((Person *)np + 1, rankPerson.name);
+					//if (res > 0)//새로받은 게 크면
+					//	((Person *)np + 1)->score = sScore;
+					//fp = fileOpen("c://data//terisRanking.txt", "wt");
+
+					//lp.cur = lp.head->next;
+					//while (lp.cur != lp.tail)
+					//{
+					//	fprintf(fp, "%s %d\n", rankPerson.name, rankPerson.score);
+					//	lp.cur = lp.cur->next;
+					//}
+				//}			
+				fclose(fp);
+				
 			}
 			sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
 
 			system("cls");
 			gotoxy(35, 5);//열, 행
-			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");		
+			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
 			scoreRes = scorePrint(&lp, str);
 			gotoxy(35, 6 + scoreRes);//열, 행
 			printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
@@ -129,8 +144,39 @@ int main()
 			destroy(&lp, personClear);
 			break;
 		}
-	}	
+	}
 	return 0;
+}
+
+void input(char * str)
+{
+	int i = 0;
+	char c;
+	while (1)
+	{
+		gotoxy(76 + i, 11);
+		if (i <= 5)
+			c = getche();
+		else {
+			c = getch();
+			printf("\b ");
+		}
+
+		str[i] = c;
+
+		if (i <= 5 && c != 8)i++;
+		else {
+
+			if (c == 8)
+			{
+				printf(" ");
+				i--; if (i <1)i = 0;
+			}
+		}
+		if (c == 13)break;
+	}
+	str[5] = '\0';
+	gotoxy(30, 30);
 }
 
 int scorePrint(LinkedList *lp, char *str)
@@ -283,7 +329,7 @@ void box(int startX)
 	printf("┃              ┃");
 	gotoxy(startX, 14);
 	printf("┗━━━━━━━┛");
-	
+
 	return;
 }
 
@@ -314,7 +360,7 @@ int gamePlaying(){
 	initGame(&tetris);
 	tetris.nextBlock = rand() % BLOCK_NUM; //최초 NextBlock 생성 CreateBlock의 Precondition
 	createBlock(&tetris);
-	pasteBlock(tetris.boPlusbl,block[tetris.whichBlock][tetris.blockState],tetris.x,tetris.y);
+	pasteBlock(tetris.boPlusbl, block[tetris.whichBlock][tetris.blockState], tetris.x, tetris.y);
 	system("cls");
 	//backGroundDisplay(3,1);
 	printf("Game Start!!!! Press Any Key\n");
@@ -322,21 +368,22 @@ int gamePlaying(){
 	tetris.gameState = PLAYING;
 	system("cls");
 	time(&prev);
-	while(tetris.gameState){
-		gotoxy(1,1);
-		if(moved){ //이동이 일어나면
+	while (tetris.gameState){
+		gotoxy(1, 1);
+		if (moved){ //이동이 일어나면
 			printBoard(tetris.boPlusbl); //사용자 게임화면 출력
 			moved = 0; //다음번 루프때 다시 출력하지 않도록 수정
 		}
-		if(!kbhit()){
+		if (!kbhit()){
 			time(&cur); //현재시각을 구함
-			if(cur != prev){ //1초단위
+			if (cur != prev){ //1초단위
 				moved = moveDown(&tetris);
 				prev = cur; //이전시간을 현재시간으로 초기화
 			}
-		}else{
+		}
+		else{
 			ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
-			switch(ch){
+			switch (ch){
 			case LEFT_ARROW:moved = moveLeft(&tetris); break;
 			case RIGHT_ARROW:moved = moveRight(&tetris); break;
 			case UP_ARROW: moved = rotate(&tetris); break;
@@ -347,7 +394,7 @@ int gamePlaying(){
 		}
 	}
 	//while루프 탈출, GameOver
-	gotoxy(1,1);
+	gotoxy(1, 1);
 	printBoard(tetris.boPlusbl);
 	//gotoxy(정중앙)
 	printf("Game Over 아무키나 누르시면 메뉴로 돌아갑니다\n"); //수정해야 함
@@ -358,46 +405,46 @@ int gamePlaying(){
 	return tetris.score;
 }
 
-void backGroundDisplay(int startX,int startY)
+void backGroundDisplay(int startX, int startY)
 {
-   //맨 윗 줄 찍기
+	//맨 윗 줄 찍기
 	int i; //index
 	gotoxy(startX, startY);
 	printf("┏");
-	for(i = 0 ; i < BOARD_WIDTH+5 ; i++) printf("━");
+	for (i = 0; i < BOARD_WIDTH + 5; i++) printf("━");
 	printf("┓");
-	for(i = startY ; i < BOARD_HEIGHT ; i++){
-		gotoxy(startX, i+1);
+	for (i = startY; i < BOARD_HEIGHT; i++){
+		gotoxy(startX, i + 1);
 		printf("┃                              ┃");
 	}
-	gotoxy(startX,i);
+	gotoxy(startX, i);
 	printf("┗");
-	for(i = 0 ; i < BOARD_WIDTH+5 ; i++) printf("━");
+	for (i = 0; i < BOARD_WIDTH + 5; i++) printf("━");
 	printf("┛");
 }
 
 void BlockDisplay(Tetris * te)
 {
-   for(int i = 0; i< BLOCK_HEIGHT; i++)
-   {
-      gotoxy(2 ,te->y+i);
-      for(int j = 0 ; j < BOARD_WIDTH ; j ++)
-      {
-         if(te->boPlusbl[i][j]==1)
-            putchar('■');
-         else if(te->boPlusbl[i][j]==0)
-             putchar('□');
-      }
-   }
+	for (int i = 0; i< BLOCK_HEIGHT; i++)
+	{
+		gotoxy(2, te->y + i);
+		for (int j = 0; j < BOARD_WIDTH; j++)
+		{
+			if (te->boPlusbl[i][j] == 1)
+				putchar('■');
+			else if (te->boPlusbl[i][j] == 0)
+				putchar('□');
+		}
+	}
 }
 
-void removeCursor(void) 
+void removeCursor(void)
 
-{ 
+{
 
-        CONSOLE_CURSOR_INFO curInfo; 
-        GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
-        curInfo.bVisible=0; 
-        SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
+	CONSOLE_CURSOR_INFO curInfo;
+	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	curInfo.bVisible = 0;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 
-} 
+}

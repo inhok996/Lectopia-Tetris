@@ -51,7 +51,7 @@ int personNameCompare(void *p1, void *p2)
 }
 int personScoreCompare(void *p1, void *p2)
 {
-
+	
 	if (((Person*)p1)->score < ((Person*)p2)->score)
 		return 1;
 	else if (((Person*)p1)->score == ((Person*)p1)->score)
