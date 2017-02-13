@@ -138,30 +138,24 @@ void destroy(LinkedList *linkedList, void(*dataFree)(void *))
 }
 void sortList(LinkedList *linkedList, size_t size, int(*compare)(void *, void *), void(*myMemCpy)(void *, void *), void(*dataFree)(void *))
 {
-	Node *temp;
-	void *temp2;//스왑용 메모리
-	int res, i, j;
-
-	temp2 = calloc(1, size);//struct Person을 보냈겠지!! size를
-	//void *로 해준 것은 아무거나 넣어도 되기 때문에, 그리고 Person을 calloc()으로 잡아준 것이기 때문에 밑에서 free()로 해제해줌
-
+	void *temp = calloc(1, size);
+	Node *p;
 	linkedList->cur = linkedList->head->next;
 
-	for (i = 0; i < linkedList->length - 1; i++){
-		temp = linkedList->cur->next;
-		for (j = i + 1; j < linkedList->length; j++){
-			res = compare(linkedList->cur + 1, temp + 1);
-			if (res == 1){
-				myMemCpy(temp + 2, temp + 1);
-				myMemCpy(temp + 1, linkedList->cur + 1);
-				myMemCpy(linkedList->cur + 1, temp2);
+	while (linkedList->cur != linkedList->tail) {
+		p = linkedList->cur->next;
+		while (p != linkedList->tail) {
+			if (compare(linkedList->cur + 1, p + 1) > 0)
+			{
+				myMemCpy(temp, p + 1);
+				myMemCpy(p + 1, linkedList->cur + 1);
+				myMemCpy(linkedList->cur + 1, temp);
 			}
-			temp = temp->next;
+			p = p->next;
 		}
 		linkedList->cur = linkedList->cur->next;
 	}
-	dataFree(temp2);//temp2에 부가 메모리가 붙기 때문에 그것을 없애기 위해 2번하는데 -> 부가 메모리를 해제하는 부분
-	//만약 노드로 보내줬었다면 temp2+1해야 함
-	free(temp2);//temp2의 person구조체 메모리 쪽을 해제하는 부분(calloc()때 Person구조체쪽만 할당했으니 그 부분만 free()가 없애준다)
+	dataFree(temp);
+	free(temp);
 	return;
 }
