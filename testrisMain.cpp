@@ -18,6 +18,7 @@ int menu();
 //void fileSave();
 void backGroundDisplay(int startX, int startY);
 void BlockDisplay(Tetris * te);
+void removeCursor(void); //커서깜빡이 제거
 
 
 #define COMMON_KEY 1 
@@ -61,6 +62,7 @@ int main()
 	int sScore;//랭크불러오기에서 점수잠시저장배열
 	srand((unsigned int)time(NULL)); //랜덤함수 seed값 초기화
 	create(&lp);
+	removeCursor();//커서 깜빡이 제거
 	
 	while (1)
 	{
@@ -223,7 +225,8 @@ void gamePlaying(){
 	char ch;//사용자로부터 키보드입력 임시저장 변수
 	int kFlag;//inKey()로부터 kFlag리턴
 	time_t prev; //자동으로 내려오는 시간을 구하기 위함
-	time_t cur;
+	time_t cur; //현재시각
+	int moved = 1; //이동상태를 나타냄
 
 	initGame(&tetris);
 	createBlock(&tetris);
@@ -237,22 +240,24 @@ void gamePlaying(){
 	time(&prev);
 	while(tetris.gameState){
 		gotoxy(1,1);
-		printBoard(tetris.boPlusbl);
-		//moveDown(&tetris);
+		if(moved){ //이동이 일어나면
+			printBoard(tetris.boPlusbl); //사용자 게임화면 출력
+			moved = 0; //다음번 루프때 다시 출력하지 않도록 수정
+		}
 		if(!kbhit()){
 			time(&cur); //현재시각을 구함
 			if(cur != prev){ //1초단위
-				moveDown(&tetris);
+				moved = moveDown(&tetris);
 				prev = cur; //이전시간을 현재시간으로 초기화
 			}
 		}else{
 			ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
 			switch(ch){
-			case LEFT_ARROW:moveLeft(&tetris); break;
-			case RIGHT_ARROW:moveRight(&tetris); break;
-			case UP_ARROW: rotate(&tetris); break;
-			case DOWN_ARROW: moveDown(&tetris); break;
-			case SPACE: spaceMove(&tetris); break;
+			case LEFT_ARROW:moved = moveLeft(&tetris); break;
+			case RIGHT_ARROW:moved = moveRight(&tetris); break;
+			case UP_ARROW: moved = rotate(&tetris); break;
+			case DOWN_ARROW: moved = moveDown(&tetris); break;
+			case SPACE: moved = spaceMove(&tetris); break;
 			case ESC: break;
 			}
 		}
@@ -302,3 +307,17 @@ void BlockDisplay(Tetris * te)
       }
    }
 }
+
+void removeCursor(void) 
+
+{ 
+
+        CONSOLE_CURSOR_INFO curInfo; 
+
+        GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
+
+        curInfo.bVisible=0; 
+
+        SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo); 
+
+} 
