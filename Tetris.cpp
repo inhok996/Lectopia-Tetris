@@ -207,9 +207,9 @@ void printBoard(int** bo)
 {
 	for(int i = 0 ; i < BOARD_HEIGHT + 1; i++){
 		for(int j = WALLSIZE - 1 ; j < BOARD_WIDTH + WALLSIZE + 1; j++){
-			if(bo[i][j] == 1) printf("■ ");
-			else if(bo[i][j] ==2) printf("★ ");
-			else printf("   ");
+			if(bo[i][j] == 1) printf("■");
+			else if(bo[i][j] ==2) printf("★");
+			else printf("  ");
 		}
 		printf("\n");
 	}
@@ -308,8 +308,6 @@ int lineCheck(int** bPb, int y)
 {
 	for(int i=0;i<BOARD_WIDTH; i++)
 	{
-		//printf("%d \n",i);
-		//getch();
 		if(bPb[y][WALLSIZE+i] != 1  ||  y >= BOARD_HEIGHT  ) break;
 		if(i==BOARD_WIDTH-1) return 1;
 	}
@@ -326,13 +324,11 @@ int lineErase(int** bPb, int y)
 	int i, j, k, cnt = 0;
 	for(i = 0; i < BLOCK_HEIGHT; i++)
 	{
-		//      printf("lineCheck y = %d, %d\n",y+i,lineCheck(bPb,y+i));
 		if( lineCheck(bPb,y+i) )
 		{
-			//         printf("라인체크 함수 리턴값:%d",lineCheck(bPb, y+i));
 			if( y+i >= BOARD_HEIGHT || (y+i) <1) break;
 			else{
-				cnt++;   printf("cnt=%d ",cnt);
+				cnt++; 
 				moveBoardDown(bPb, y+i);
 			}
 		}
@@ -416,12 +412,15 @@ int moveDown(Tetris* te)
 		pasteBoard(te->boPlusbl,te->board); //bpb 원위치
 		te->y--;//좌표를 돌려놓음
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
-		//full line 확인
+		lineErase(te->boPlusbl,te->y);
 		//바닥에 도달 -> board(배경)을 bpb으로 초기화
 		pasteBoard(te->board,te->boPlusbl);
 		createBlock(te);
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
 		//game over 확인
+		if(crashCheck(te->boPlusbl,te->x,te->y)){ //새로생긴 블럭과 만약 충돌이면?
+			te->gameState = GAME_OVER; //gamestate == GameOver
+		}
 
 		return 0;//실패
 	}
@@ -456,7 +455,7 @@ int spaceMove(Tetris* te)
 	te->y--;//좌표를 돌려놓음
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
 	//lineErase
-	
+	lineErase(te->boPlusbl,te->y);
 
 
 	//바닥에 도달 -> board(배경)을 bpb으로 초기화
@@ -464,6 +463,11 @@ int spaceMove(Tetris* te)
 	createBlock(te);
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y);
 	//gameOver
+	if(crashCheck(te->boPlusbl,te->x,te->y)){ //새로생긴 블럭과 만약 충돌이면?
+		te->gameState = GAME_OVER; //gamestate == GameOver
+	}
+
+
 	return 1; //성공
 }
 

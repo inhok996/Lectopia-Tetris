@@ -16,6 +16,9 @@ void gamePlaying();//게임시작함수
 void textcolor(int foreground, int background);
 int menu();
 //void fileSave();
+void backGroundDisplay(int startX, int startY);
+void BlockDisplay(Tetris * te);
+
 
 #define COMMON_KEY 1 
 #define SPECIAL_KEY 0 
@@ -224,6 +227,7 @@ void gamePlaying(){
 	createBlock(&tetris);
 	pasteBlock(tetris.boPlusbl,block[tetris.whichBlock][tetris.blockState],tetris.x,tetris.y);
 	system("cls");
+	//backGroundDisplay(3,1);
 	printf("Game Start!!!! Press Any Key\n");
 	getch();
 	tetris.gameState = PLAYING;
@@ -244,4 +248,48 @@ void gamePlaying(){
 		}
 		//}
 	}
+	//while루프 탈출, GameOver
+	gotoxy(1,1);
+	printBoard(tetris.boPlusbl);
+	//gotoxy(정중앙)
+	printf("Game Over 아무키나 누르시면 메뉴로 돌아갑니다\n"); //수정해야 함
+	gameOver(&tetris); //tetris structure에 동적할당된 메모리 초기화및 값들 초기화
+	getch();
+	system("cls");
+	//점수입력란
+	
+}
+
+
+void backGroundDisplay(int startX,int startY)
+{
+   //맨 윗 줄 찍기
+	int i; //index
+	gotoxy(startX, startY);
+	printf("┏");
+	for(i = 0 ; i < BOARD_WIDTH+5 ; i++) printf("━");
+	printf("┓");
+	for(i = startY ; i < BOARD_HEIGHT ; i++){
+		gotoxy(startX, i+1);
+		printf("┃                              ┃");
+	}
+	gotoxy(startX,i);
+	printf("┗");
+	for(i = 0 ; i < BOARD_WIDTH+5 ; i++) printf("━");
+	printf("┛");
+}
+
+void BlockDisplay(Tetris * te)
+{
+   for(int i=0; i< BLOCK_HEIGHT; i++)
+   {
+      gotoxy(2 ,te->y+i);
+      for(int j = 0 ; j < BOARD_WIDTH ; j ++)
+      {
+         if(te->boPlusbl[i][j]==1)
+            putchar('■');
+         else if(te->boPlusbl[i][j]==0)
+             putchar('□');
+      }
+   }
 }
