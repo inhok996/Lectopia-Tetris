@@ -414,7 +414,7 @@ int moveDown(Tetris* te)
 		pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
 		//lineErase
 		switch(lineErase(te->boPlusbl,te->y)){
-		case 1: te->score += 10; break; //single
+		case 1: te->score += 10; break; //single score
 		case 2: te->score += 30; break; //double
 		case 3: te->score += 50; break; //triple
 		case 4: te->score += 100; break; //tetris
@@ -429,9 +429,8 @@ int moveDown(Tetris* te)
 			te->gameState = GAME_OVER; //gamestate == GameOver
 		}
 
-		return 0;//실패
 	}
-	return 1; //성공
+	return 1; //무조건 성공으로 간주
 
 }
 int rotate(Tetris* te)
@@ -463,7 +462,7 @@ int spaceMove(Tetris* te)
 	pasteBlock(te->boPlusbl,block[te->whichBlock][te->blockState],te->x,te->y); //block 붙이기
 	//lineErase
 	switch(lineErase(te->boPlusbl,te->y)){
-	case 1: te->score += 10; break; //single
+	case 1: te->score += 10; break; //single score
 	case 2: te->score += 30; break; //double
 	case 3: te->score += 50; break; //triple
 	case 4: te->score += 100; break; //tetris
@@ -479,7 +478,7 @@ int spaceMove(Tetris* te)
 	}
 
 
-	return 1; //성공
+	return 1; //무조건 성공으로 간주
 }
 
 
