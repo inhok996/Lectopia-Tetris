@@ -131,10 +131,11 @@ int main()
 					}
 				}
 				fclose(fp);
+			}
 				sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
 
 				system("cls");
-			}
+			
 			gotoxy(35, 5);//열, 행
 			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
 			scoreRes = scorePrint(&lp, str);
@@ -158,11 +159,13 @@ int main()
 void input(char * str)
 {
 	int i = 0;
+	int length = 8;
 	char c;
 	while (1)
 	{
+		if (i == length + 1)printf("\b ");
 		gotoxy(76 + i, 11);
-		if (i <= 5)
+		if (i <= length)
 			c = getche();
 		else {
 			c = getch();
@@ -171,10 +174,10 @@ void input(char * str)
 
 		str[i] = c;
 
-		if (i <= 5 && c != 8)i++;
+		if (i <= length && c != 8) { i++; }
 		else {
 
-			if (c == 8)
+			if (c == 8 && i != 0)
 			{
 				printf(" ");
 				i--; if (i <1)i = 0;
@@ -196,14 +199,14 @@ int scorePrint(LinkedList *lp, char *str)
 	{
 
 		gotoxy(35, 6 + i);
-		printf("┃  성명 : ");
+		printf("┃  ID : ");
 		textcolor(LIGHTBLUE + j, BLACK);
 		if (strcmp(((Person *)np + 1)->name, str) == 0)textcolor(13, BLACK);
 		gotoxy(45, 6 + i);
 		printf("%-20s", ((Person *)np + 1)->name);
 		gotoxy(55, 6 + i);
 		textcolor(LIGHTGRAY, BLACK);
-		printf("점수 : ");
+		printf("Score : ");
 		gotoxy(65, 6 + i);
 		textcolor(LIGHTBLUE + j, BLACK);
 		if (strcmp(((Person *)np + 1)->name, str) == 0)textcolor(13, BLACK);
