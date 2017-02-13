@@ -222,6 +222,8 @@ void gamePlaying(){
 	Tetris tetris;
 	char ch;//사용자로부터 키보드입력 임시저장 변수
 	int kFlag;//inKey()로부터 kFlag리턴
+	time_t prev; //자동으로 내려오는 시간을 구하기 위함
+	time_t cur;
 
 	initGame(&tetris);
 	createBlock(&tetris);
@@ -232,21 +234,28 @@ void gamePlaying(){
 	getch();
 	tetris.gameState = PLAYING;
 	system("cls");
+	time(&prev);
 	while(tetris.gameState){
 		gotoxy(1,1);
 		printBoard(tetris.boPlusbl);
 		//moveDown(&tetris);
-		//if(kbhit()){
-		ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
-		switch(ch){
-		case LEFT_ARROW:moveLeft(&tetris); break;
-		case RIGHT_ARROW:moveRight(&tetris); break;
-		case UP_ARROW: rotate(&tetris); break;
-		case DOWN_ARROW: moveDown(&tetris); break;
-		case SPACE: spaceMove(&tetris); break;
-		case ESC: break;
+		if(!kbhit()){
+			time(&cur); //현재시각을 구함
+			if(cur != prev){ //1초단위
+				moveDown(&tetris);
+				prev = cur; //이전시간을 현재시간으로 초기화
+			}
+		}else{
+			ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
+			switch(ch){
+			case LEFT_ARROW:moveLeft(&tetris); break;
+			case RIGHT_ARROW:moveRight(&tetris); break;
+			case UP_ARROW: rotate(&tetris); break;
+			case DOWN_ARROW: moveDown(&tetris); break;
+			case SPACE: spaceMove(&tetris); break;
+			case ESC: break;
+			}
 		}
-		//}
 	}
 	//while루프 탈출, GameOver
 	gotoxy(1,1);
@@ -281,7 +290,7 @@ void backGroundDisplay(int startX,int startY)
 
 void BlockDisplay(Tetris * te)
 {
-   for(int i=0; i< BLOCK_HEIGHT; i++)
+   for(int i = 0; i< BLOCK_HEIGHT; i++)
    {
       gotoxy(2 ,te->y+i);
       for(int j = 0 ; j < BOARD_WIDTH ; j ++)
