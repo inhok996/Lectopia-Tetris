@@ -67,7 +67,7 @@ int main()
 	Person rankPerson;
 	void *np;
 	char str[101] = { 0 };//랭크불러오기에서 이름잠시저장배열
-	//int end;//랭크불러오기에서 종료조건	
+						  //int end;//랭크불러오기에서 종료조건	
 	int sScore = 0;//랭크불러오기에서 점수잠시저장배열
 	int scoreRes;
 	int res;
@@ -84,7 +84,7 @@ int main()
 		startX = menu();
 		system("cls");
 
-		if (startX == 28){//게임시작함수
+		if (startX == 28) {//게임시작함수
 			sScore = gamePlaying();
 			startX = 48;
 		}
@@ -134,16 +134,17 @@ int main()
 				sortList(&lp, sizeof(Person), personScoreCompare, personMemCpy, personClear);
 
 				system("cls");
-				gotoxy(35, 5);//열, 행
-				printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
-				scoreRes = scorePrint(&lp, str);
-				gotoxy(35, 6 + scoreRes);//열, 행
-				printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
-				printf("다음으로 넘어가려면 아무key나 누르시오");
-				getch();
-				system("cls");
-				sScore = 0;
-			}//랭크함수
+			}
+			gotoxy(35, 5);//열, 행
+			printf("┏━━━━━━━━━━━━━━━━━━━━━━━┓\n");
+			scoreRes = scorePrint(&lp, str);
+			gotoxy(35, 6 + scoreRes);//열, 행
+			printf("┗━━━━━━━━━━━━━━━━━━━━━━━┛\n");
+			printf("\t\t\t\t\tpress any key to return\n");
+			getch();
+			system("cls");
+			sScore = 0;
+			//랭크함수
 		}
 		else
 		{
@@ -181,7 +182,7 @@ void input(char * str)
 		}
 		if (c == 13)break;
 	}
-	str[i-1] = '\0';
+	str[i - 1] = '\0';
 	gotoxy(30, 30);
 }
 
@@ -237,12 +238,12 @@ void dataFileLoad(LinkedList *lp) // 데이터 파일내의 데이터를 리스트에 저장
 		strcpy(inData.name, name);
 
 		appendFromHead(lp, &inData, sizeof(Person), personMemCpy); //lp는 링크드리스트 관리구조체, inData의 시작주소를 보냄
-		//appendFromTail(lp, &inData);
+																   //appendFromTail(lp, &inData);
 
 		free(inData.name);
 	}
 	fclose(fp); //파일 닫기! 
-	//tail노드 앞에 노드가 생김
+				//tail노드 앞에 노드가 생김
 }
 
 int menu()
@@ -301,7 +302,7 @@ char inKey(int *keyFlag)
 	char ascii, scan;
 
 	ascii = getch(); // 입력된 문자의 아스키코드를 입력받아옴 
-	if (ascii == -32 || ascii == 0){ // 입력된 문자의 아스키코드가 -32이거나 0이면 특수키가 입력된것임 
+	if (ascii == -32 || ascii == 0) { // 입력된 문자의 아스키코드가 -32이거나 0이면 특수키가 입력된것임 
 		scan = getch(); // 특수키가 입력되었을때에는 scan code값을 입력받아옴 (하드웨어에서 제공하는 키보드 버퍼에 남아있다, 그걸 받아옴 <>stdin)
 		*keyFlag = SPECIAL_KEY;
 		return (scan);//아스키코드를 리턴하는 것은 의미 없으므로 scan코드 리턴
@@ -355,7 +356,7 @@ void textcolor(int foreground, int background)
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-int gamePlaying(){
+int gamePlaying() {
 	CTetris cte;
 	char ch;//사용자로부터 키보드입력 임시저장 변수
 	int kFlag;//inKey()로부터 kFlag리턴
@@ -372,27 +373,28 @@ int gamePlaying(){
 	cte.tetris.gameState = PLAYING;
 	system("cls");
 	time(&prev);
-	backGroundDisplay(&cte,gameStartX,gameStartY);
+	backGroundDisplay(&cte, gameStartX, gameStartY);
 	createBlock(&cte.tetris);
-	pasteBlock(cte.tetris.boPlusbl,block[cte.tetris.whichBlock][cte.tetris.blockState],cte.tetris.x,cte.tetris.y);
+	pasteBlock(cte.tetris.boPlusbl, block[cte.tetris.whichBlock][cte.tetris.blockState], cte.tetris.x, cte.tetris.y);
 	CblockColoring(&cte);
-	pasteBlock(cte.CboPlusbl,cte.cBlock,cte.tetris.x,cte.tetris.y);
-	while(cte.tetris.gameState){
-		if(moved){ //이동이 일어나면
-			gameDisplay(&cte,gameStartX+2,gameStartY);
-			nextBlockDisplay(&cte,gameStartX+5,gameStartY+1);
-			scoreDisplay(cte.tetris.score,gameStartX,gameStartY);
+	pasteBlock(cte.CboPlusbl, cte.cBlock, cte.tetris.x, cte.tetris.y);
+	while (cte.tetris.gameState) {
+		if (moved) { //이동이 일어나면
+			gameDisplay(&cte, gameStartX + 2, gameStartY);
+			nextBlockDisplay(&cte, gameStartX + 5, gameStartY + 1);
+			scoreDisplay(cte.tetris.score, gameStartX, gameStartY);
 			moved = 0; //다음번 루프때 다시 출력하지 않도록 수정
 		}
-		if(!kbhit()){
+		if (!kbhit()) {
 			time(&cur); //현재시각을 구함
-			if(cur != prev){ //1초단위
+			if (cur != prev) { //1초단위
 				moved = CmoveDown(&cte);
 				prev = cur; //이전시간을 현재시간으로 초기화
 			}
-		}else{
+		}
+		else {
 			ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
-			switch(ch){
+			switch (ch) {
 			case LEFT_ARROW:moved = CmoveLeft(&cte); break;
 			case RIGHT_ARROW:moved = CmoveRight(&cte); break;
 			case UP_ARROW: moved = Crotate(&cte); break;
@@ -405,14 +407,14 @@ int gamePlaying(){
 	}
 
 	//while루프 탈출, GameOver
-	gameDisplay(&cte,gameStartX+2,gameStartY);
+	gameDisplay(&cte, gameStartX + 2, gameStartY);
 	//gotoxy(정중앙)
 	printf("Game Over 아무키나 누르시면 메뉴로 돌아갑니다\n"); //수정해야 함
 	CgameOver(&cte); //tetris structure에 동적할당된 메모리 초기화및 값들 초기화
 	getch();
 	system("cls");
 	//점수입력란
-	
+
 	return cte.tetris.score;
 }
 
@@ -429,98 +431,99 @@ void removeCursor(void)
 
 void gameDisplay(CTetris * cte, int startX, int startY)
 {
-   gotoxy(startX, startY);
-   for(int i = 0; i < BOARD_HEIGHT ; i++)
-   {
-      gotoxy(startX, startY+i);
-      for(int j = 0; j <BOARD_WIDTH ; j++)
-      {
-         switch(cte->CboPlusbl[i][WALLSIZE+j])
-         {
-            case 1:printf("■"); break;
-            case 2:textcolor(15, 4); printf("■"); textcolor( 15, 0); break;
-            case 3:textcolor(15, 6); printf("■"); textcolor( 15, 0); break;
-            case 4:textcolor(15, 14); printf("■"); textcolor( 15, 0); break;
-            case 5:textcolor(15, 2); printf("■"); textcolor( 15, 0); break;
-            case 6:textcolor(15, 1); printf("■"); textcolor( 15, 0); break;
-            case 7:textcolor(15, 5); printf("■"); textcolor( 15, 0); break;
-            case 8:textcolor(15, 3); printf("■"); textcolor( 15, 0); break;
-            default : printf("  ");
-         }
-      }
-      //빨 주 노 초 파 남 보
-      //4  6  14  2  1  5  3
-      //12 8 14  10  9  13  11
+	gotoxy(startX, startY);
+	for (int i = 0; i < BOARD_HEIGHT; i++)
+	{
+		gotoxy(startX, startY + i);
+		for (int j = 0; j <BOARD_WIDTH; j++)
+		{
+			switch (cte->CboPlusbl[i][WALLSIZE + j])
+			{
+			case 1:printf("■"); break;
+			case 2:textcolor(15, 4); printf("■"); textcolor(15, 0); break;
+			case 3:textcolor(15, 6); printf("■"); textcolor(15, 0); break;
+			case 4:textcolor(15, 14); printf("■"); textcolor(15, 0); break;
+			case 5:textcolor(15, 2); printf("■"); textcolor(15, 0); break;
+			case 6:textcolor(15, 1); printf("■"); textcolor(15, 0); break;
+			case 7:textcolor(15, 5); printf("■"); textcolor(15, 0); break;
+			case 8:textcolor(15, 3); printf("■"); textcolor(15, 0); break;
+			default: printf("  ");
+			}
+		}
+		//빨 주 노 초 파 남 보
+		//4  6  14  2  1  5  3
+		//12 8 14  10  9  13  11
 
 
-      printf("\n");
-   }
+		printf("\n");
+	}
 }
 
 void nextBlockDisplay(CTetris* cte, int startX, int startY)
 {
 	block[cte->tetris.nextBlock][0];
 	int tempBlock[BLOCK_HEIGHT][BLOCK_WIDTH];
-	for(int i = 0 ; i < BLOCK_HEIGHT; i++){
-		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
+	for (int i = 0; i < BLOCK_HEIGHT; i++) {
+		for (int j = 0; j < BLOCK_WIDTH; j++) {
 			tempBlock[i][j] = block[cte->tetris.nextBlock][0][i][j];
-			if(tempBlock[i][j] == 1) cte->cBlock[i][j] = cte->tetris.nextBlock + 2;//첫번째블럭부터 2번으로 Coloring됨
-			//printf("%d",cte->cBlock[i][j]);
+			if (tempBlock[i][j] == 1) cte->cBlock[i][j] = cte->tetris.nextBlock + 2;//첫번째블럭부터 2번으로 Coloring됨
+																					//printf("%d",cte->cBlock[i][j]);
 		}
 		//printf("\n");
 		//getch();
 	}
 
-	gotoxy(startX + 2*(BOARD_WIDTH +4) ,startY+2);
-	for(int i = 0; i<BLOCK_WIDTH; i++){
-	   gotoxy(startX + 2*(BOARD_WIDTH +4) ,startY+2 + i);
-	   for(int j = 0 ; j < BLOCK_HEIGHT; j++){
-		  switch(tempBlock[i][j])
-         {
-            case 1:printf("■"); break;
-            case 2:textcolor(15, 4); printf("■"); textcolor( 15, 0); break;
-            case 3:textcolor(15, 6); printf("■"); textcolor( 15, 0); break;
-            case 4:textcolor(15, 14); printf("■"); textcolor( 15, 0); break;
-            case 5:textcolor(15, 2); printf("■"); textcolor( 15, 0); break;
-            case 6:textcolor(15, 1); printf("■"); textcolor( 15, 0); break;
-            case 7:textcolor(15, 5); printf("■"); textcolor( 15, 0); break;
-            case 8:textcolor(15, 3); printf("■"); textcolor( 15, 0); break;
-            default : printf("  ");
-         }
-	   }
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2);
+	for (int i = 0; i<BLOCK_WIDTH; i++) {
+		gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2 + i);
+		for (int j = 0; j < BLOCK_HEIGHT; j++) {
+			switch (tempBlock[i][j])
+			{
+			case 1:printf("■"); break;
+			case 2:textcolor(15, 4); printf("■"); textcolor(15, 0); break;
+			case 3:textcolor(15, 6); printf("■"); textcolor(15, 0); break;
+			case 4:textcolor(15, 14); printf("■"); textcolor(15, 0); break;
+			case 5:textcolor(15, 2); printf("■"); textcolor(15, 0); break;
+			case 6:textcolor(15, 1); printf("■"); textcolor(15, 0); break;
+			case 7:textcolor(15, 5); printf("■"); textcolor(15, 0); break;
+			case 8:textcolor(15, 3); printf("■"); textcolor(15, 0); break;
+			default: printf("  ");
+			}
+		}
 	}
 }
 
 void backGroundDisplay(CTetris* cte, int startX, int startY)
 {
-   gotoxy(startX,startY);
-   for(int i = 0 ; i < BOARD_HEIGHT + 1; i++){
-      for(int j = WALLSIZE - 1 ; j < BOARD_WIDTH + WALLSIZE + 1; j++){
-		  if(cte->CboPlusbl[i][j] == 1){ printf("▤");
-         }
-		  else if(cte->CboPlusbl[i][j] ==2) printf("★");
-         else printf("  ");
-      }
-      printf("\n");
-   }
-   gotoxy(startX + 2*(BOARD_WIDTH +4) ,startY+2); printf("+-  N E X T  -+ ");
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+3); printf("|             | ");
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+4); printf("|             | ");
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+5); printf("|             | ");
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+6); printf("|             | ");
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+7); printf("+-- -  -  - --+ "); 
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+8); printf(" YOUR SCORE :");     
-	gotoxy(startX + 2*(BOARD_WIDTH +4), startY+9); printf("        %6d", cte->tetris.score); //현재 스코어
- //   gotoxy(startX + 2*(BOARD_WIDTH +4), startY+10); printf(" LAST SCORE :");     
- //  gotoxy(startX + 2*(BOARD_WIDTH +4), startY+11); printf("        %6d", 2345); //직전 스코어
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+12); printf(" BEST SCORE :");     
-    //gotoxy(startX + 2*(BOARD_WIDTH +4), startY+13); printf("        %6d", 345); //랭킹 1위 스코어    
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+15); printf("  △   : Shift        SPACE : Hard Drop");     
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+16); printf("◁  ▷ : Left / Right   P   : Pause");     
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+17); printf("  ▽   : Soft Drop     ESC  : Quit");
+	gotoxy(startX, startY);
+	for (int i = 0; i < BOARD_HEIGHT + 1; i++) {
+		for (int j = WALLSIZE - 1; j < BOARD_WIDTH + WALLSIZE + 1; j++) {
+			if (cte->CboPlusbl[i][j] == 1) {
+				printf("▤");
+			}
+			else if (cte->CboPlusbl[i][j] == 2) printf("★");
+			else printf("  ");
+		}
+		printf("\n");
+	}
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2); printf("+-  N E X T  -+ ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 3); printf("|             | ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 4); printf("|             | ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 5); printf("|             | ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 6); printf("|             | ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 7); printf("+-- -  -  - --+ ");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 8); printf(" YOUR SCORE :");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 9); printf("        %6d", cte->tetris.score); //현재 스코어
+																								  //   gotoxy(startX + 2*(BOARD_WIDTH +4), startY+10); printf(" LAST SCORE :");     
+																								  //  gotoxy(startX + 2*(BOARD_WIDTH +4), startY+11); printf("        %6d", 2345); //직전 스코어
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 12); printf(" BEST SCORE :");
+	//gotoxy(startX + 2*(BOARD_WIDTH +4), startY+13); printf("        %6d", 345); //랭킹 1위 스코어    
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 15); printf("  △   : Shift        SPACE : Hard Drop");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 16); printf("◁  ▷ : Left / Right   P   : Pause");
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 17); printf("  ▽   : Soft Drop     ESC  : Quit");
 }
 
 void scoreDisplay(int currentScore, int startX, int startY)
 {
-    gotoxy(startX + 2*(BOARD_WIDTH +4), startY+9); printf("        %6d", currentScore); //현재 스코어
+	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 9); printf("        %6d", currentScore); //현재 스코어
 }
