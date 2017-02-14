@@ -366,6 +366,7 @@ int gamePlaying() {
 	time_t prev; //자동으로 내려오는 시간을 구하기 위함
 	time_t cur; //현재시각
 	int moved = 1; //move가 일어나면
+	int pause = 0; //pause 발생시
 
 	CinitGame(&cte);
 	cte.tetris.nextBlock = rand() % BLOCK_NUM; //최초 NextBlock 생성 CreateBlock의 Precondition
@@ -391,20 +392,25 @@ int gamePlaying() {
 		}
 		if (!kbhit()) {
 			time(&cur); //현재시각을 구함
+			if(!pause){
 			if (cur != prev) { //1초단위
 				moved = CmoveDown(&cte);
 				prev = cur; //이전시간을 현재시간으로 초기화
+			}
 			}
 		}
 		else {
 			ch = inKey(&kFlag);//kFlag 가 상태를 나타냄(특수키다 일반키다 구분 상태 여부)
 			switch (ch) {
-			case LEFT_ARROW:moved = CmoveLeft(&cte); break;
-			case RIGHT_ARROW:moved = CmoveRight(&cte); break;
-			case UP_ARROW: moved = Crotate(&cte); break;
-			case DOWN_ARROW: moved = CmoveDown(&cte); break;
-			case SPACE: moved = CspaceMove(&cte); break;
-			case ESC: break;
+			case LEFT_ARROW:if(!pause) moved = CmoveLeft(&cte); break;
+			case RIGHT_ARROW:if(!pause) moved = CmoveRight(&cte); break;
+			case UP_ARROW:if(!pause) moved = Crotate(&cte); break;
+			case DOWN_ARROW:if(!pause) moved = CmoveDown(&cte); break;
+			case SPACE:if(!pause) moved = CspaceMove(&cte); break;
+			case 'p': if(pause == 0){ pause =1; } 
+					  else if(pause == 1) {pause = 0; time(&cur); prev = cur;}
+					  break;
+			case ESC: cte.tetris.gameState = GAME_OVER; break;
 
 			}
 		}
@@ -443,6 +449,7 @@ void gameDisplay(CTetris * cte, int startX, int startY)
 		{
 			switch (cte->CboPlusbl[i][WALLSIZE + j])
 			{
+			case 0: printf("  "); break;
 			case 1:textcolor(15, 7); printf("□"); textcolor( 15, 0); break;
 			case 2:textcolor(15, 4); printf("■"); textcolor(15, 0); break;
 			case 3:textcolor(15, 6); printf("■"); textcolor(15, 0); break;
@@ -451,7 +458,7 @@ void gameDisplay(CTetris * cte, int startX, int startY)
 			case 6:textcolor(15, 1); printf("■"); textcolor(15, 0); break;
 			case 7:textcolor(15, 5); printf("■"); textcolor(15, 0); break;
 			case 8:textcolor(15, 3); printf("■"); textcolor(15, 0); break;
-			default: printf("  ");
+			default: textcolor(15, 3); printf("■"); textcolor(15, 0); break;
 			}
 		}
 		//빨 주 노 초 파 남 보
