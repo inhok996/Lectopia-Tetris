@@ -371,7 +371,6 @@ int gamePlaying() {
 	CinitGame(&cte);
 	cte.tetris.nextBlock = rand() % BLOCK_NUM; //최초 NextBlock 생성 CreateBlock의 Precondition
 	system("cls");
-	//backGroundDisplay(3,1);
 	printf("Game Start!!!! Press Any Key\n");
 	getch();
 	cte.tetris.gameState = PLAYING;
@@ -380,7 +379,7 @@ int gamePlaying() {
 	backGroundDisplay(&cte, gameStartX, gameStartY);
 	createBlock(&cte.tetris);
 	pasteBlock(cte.tetris.boPlusbl, block[cte.tetris.whichBlock][cte.tetris.blockState], cte.tetris.x, cte.tetris.y);
-	CblockColoring(&cte);
+	CblockColoring(cte.cBlock,block[cte.tetris.whichBlock][cte.tetris.blockState],cte.tetris.whichBlock+2);
 	pasteBlock(cte.CboPlusbl, cte.cBlock, cte.tetris.x, cte.tetris.y);
 	while (cte.tetris.gameState) {
 		if (moved) { //이동이 일어나면
@@ -393,10 +392,10 @@ int gamePlaying() {
 		if (!kbhit()) {
 			time(&cur); //현재시각을 구함
 			if(!pause){
-			if (cur != prev) { //1초단위
-				moved = CmoveDown(&cte);
-				prev = cur; //이전시간을 현재시간으로 초기화
-			}
+				if (cur != prev) { //1초단위
+					moved = CmoveDown(&cte);
+					prev = cur; //이전시간을 현재시간으로 초기화
+				}
 			}
 		}
 		else {
