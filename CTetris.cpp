@@ -32,7 +32,7 @@ int CmoveLeft(CTetris* cte)
 	int res = 0;
 	pasteBoard(cte->CboPlusbl,cte->Cboard);//배경보드로 돌려놓음
 	res = moveLeft(&cte->tetris); //tetris를 먼저 초기화
-	CblockColoring(cte); //cte->blcok을 coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //CboPlusbl에 Paste
 	return res;
 }
@@ -43,7 +43,7 @@ int CmoveRight(CTetris* cte)
 	int res = 0;
 	pasteBoard(cte->CboPlusbl,cte->Cboard);//배경보드로 돌려놓음
 	res = moveRight(&cte->tetris); //tetris를 먼저 초기화
-	CblockColoring(cte); //cte->blcok을 coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2); //cte->blcok을 coloring
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //CboPlusbl에 Paste
 	return res;
 }
@@ -53,7 +53,7 @@ int CmoveDown(CTetris* cte)
 {
 	pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 	pasteBoard(cte->CboPlusbl,cte->Cboard);//Cboard 초기화
-	CblockColoring(cte);//cte 의 Cblock을 Coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cte 의 Cblock을 Coloring
 	cte->tetris.y++; //좌표이동
 	pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y); //block 붙이기
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //block 붙이기
@@ -75,7 +75,7 @@ int CmoveDown(CTetris* cte)
 		pasteBoard(cte->tetris.board,cte->tetris.boPlusbl);
 		pasteBoard(cte->Cboard,cte->CboPlusbl); //ColorBoard도 같이 초기화
 		createBlock(&cte->tetris); //다음 블럭 생성
-		CblockColoring(cte);//cte 의 Cblock을 Coloring
+		CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cte 의 Cblock을 Coloring
 		pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y);
 		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y);
 		//game over 확인
@@ -93,7 +93,7 @@ int Crotate(CTetris* cte)
 	int res = 0;
 	pasteBoard(cte->CboPlusbl,cte->Cboard);//배경보드로 돌려놓음
 	res = rotate(&cte->tetris); //tetris를 먼저 초기화
-	CblockColoring(cte); //cte->blcok을 coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2); //cte->blcok을 coloring
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //CboPlusbl에 Paste
 	return res;
 }
@@ -104,7 +104,7 @@ int CspaceMove(CTetris* cte)
 	while(!crashCheck(cte->tetris.boPlusbl,cte->tetris.x,cte->tetris.y)){ //충돌 안할 때
 		pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 		pasteBoard(cte->CboPlusbl,cte->Cboard);//Cboard 초기화
-		CblockColoring(cte);//cte 의 Cblock을 Coloring
+		CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cte 의 Cblock을 Coloring
 		cte->tetris.y++; //좌표이동
 		pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y); //block 붙이기
 		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //block 붙이기
@@ -127,7 +127,7 @@ int CspaceMove(CTetris* cte)
 	pasteBoard(cte->tetris.board,cte->tetris.boPlusbl);
 	pasteBoard(cte->Cboard,cte->CboPlusbl); //ColorBoard도 같이 초기화
 	createBlock(&cte->tetris); //다음 블럭 생성
-	CblockColoring(cte);//cte 의 Cblock을 Coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cte 의 Cblock을 Coloring
 	pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y);
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y);
 	//game over 확인
@@ -152,21 +152,15 @@ void CmakeGhost(CTetris* cte)
 	//충돌 이후
 	pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //bpb 원위치
 	tempy--;//좌표를 돌려놓음
-	for(int i = 0 ; i < BLOCK_HEIGHT; i++){ //block Coloring
-		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
-			ghostBlk[i][j] = block[cte->tetris.whichBlock][cte->tetris.blockState][i][j];
-			if(ghostBlk[i][j] == 1) ghostBlk[i][j] = 1;//ghost Block은 1로 설정
-		}
-	}
-	CblockColoring(cte);
-	pasteBlock(cte->CboPlusbl,ghostBlk,cte->tetris.x,tempy);
+
+	CblockColoring(ghostBlk,block[cte->tetris.whichBlock][cte->tetris.blockState],1);//ghost block setting
+	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cblock setting
+	pasteBlock(cte->CboPlusbl,ghostBlk,cte->tetris.x,tempy);//ghostBlock을 먼저 paste
 	if(tempy <= cte->tetris.y + 4){ //Ghost와 블럭이 겹치는 구간
-		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y); //block도 바꿔줌
-		for(int i = cte->tetris.y ; i < cte->tetris.y + BLOCK_HEIGHT; i++){ //block Coloring
-			for(int j = cte->tetris.x ; j < cte->tetris.y + BLOCK_WIDTH ; j++){
-				if(ghostBlk[i-cte->tetris.y][j-cte->tetris.x]) //블럭구간만 체크
-					if(cte->CboPlusbl[i][j] > cte->tetris.whichBlock + 2) 
-						cte->CboPlusbl[i][j] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
+		for(int i = 0 ; i < BLOCK_HEIGHT; i++){ //block Coloring
+			for(int j = 0 ; j < BLOCK_WIDTH ; j++){
+				if(ghostBlk[i][j]) //블럭구간만 체크
+				cte->CboPlusbl[i + cte->tetris.y][j + cte->tetris.x] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
 			}
 		}
 	}
@@ -176,17 +170,23 @@ void CgameOver(CTetris* cte)
 {
 	int i;
 	gameOver(&cte->tetris);//tetris Terminate
-	//ColorgameOver시켜야 함
+	for (i = 0; i < BOARD_HEIGHT + WALLSIZE; i++)
+	{
+		free(cte->Cboard[i]);
+		free(cte->CboPlusbl[i]);
+	}
+	free(cte->Cboard);
+	free(cte->CboPlusbl);
 }
 
 
 //Block의 Color를 입힘
-void CblockColoring(CTetris* cte)
+void CblockColoring(int(*to)[4],int(*from)[4],int color)
 {
 	for(int i = 0 ; i < BLOCK_HEIGHT; i++){
 		for(int j = 0 ; j < BLOCK_WIDTH ; j++){
-			cte->cBlock[i][j] = block[cte->tetris.whichBlock][cte->tetris.blockState][i][j];
-			if(cte->cBlock[i][j] == 1) cte->cBlock[i][j] = cte->tetris.whichBlock + 2;//첫번째블럭부터 2번으로 Coloring됨
+			to[i][j] = from[i][j];
+			if(to[i][j] != 0) to[i][j] = color;
 			//printf("%d",cte->cBlock[i][j]);
 		}
 		//printf("\n");
