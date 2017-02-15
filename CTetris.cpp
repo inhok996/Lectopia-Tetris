@@ -48,9 +48,10 @@ int CmoveRight(CTetris* cte)
 	return res;
 }
 //함수명 : CmoveDown
-//return : 1(성공) 0 실패
+//return : 지운 line 수 리턴
 int CmoveDown(CTetris* cte)
 {
+	int lines = 1; //지운 라인수
 	pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 	pasteBoard(cte->CboPlusbl,cte->Cboard);//Cboard 초기화
 	CblockColoring(cte->cBlock,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.whichBlock+2);//cte 의 Cblock을 Coloring
@@ -64,7 +65,7 @@ int CmoveDown(CTetris* cte)
 		pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y); //block 붙이기
 		pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y);
 		//lineErase
-		switch(ClineErase(cte->tetris.boPlusbl,cte->CboPlusbl,cte->tetris.y)){
+		switch(lines = ClineErase(cte->tetris.boPlusbl,cte->CboPlusbl,cte->tetris.y)){
 		case 1: cte->tetris.score += 10; break; //single score
 		case 2: cte->tetris.score += 30; break; //double
 		case 3: cte->tetris.score += 50; break; //triple
@@ -83,7 +84,7 @@ int CmoveDown(CTetris* cte)
 			cte->tetris.gameState = GAME_OVER; //gamestate == GameOver
 		}
 	}
-	return 1; //무조건 성공으로 간주
+	return lines; //무조건 성공으로 간주
 
 }
 //함수명 : Crotate
@@ -101,6 +102,7 @@ int Crotate(CTetris* cte)
 //return :1(성공) 0 실패
 int CspaceMove(CTetris* cte)
 {
+	int lines = 1; //지운 라인수
 	while(!crashCheck(cte->tetris.boPlusbl,cte->tetris.x,cte->tetris.y)){ //충돌 안할 때
 		pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 		pasteBoard(cte->CboPlusbl,cte->Cboard);//Cboard 초기화
@@ -116,7 +118,7 @@ int CspaceMove(CTetris* cte)
 	pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,cte->tetris.y); //block 붙이기
 	pasteBlock(cte->CboPlusbl,cte->cBlock,cte->tetris.x,cte->tetris.y);
 	//lineErase
-	switch(ClineErase(cte->tetris.boPlusbl,cte->CboPlusbl,cte->tetris.y)){
+	switch(lines = ClineErase(cte->tetris.boPlusbl,cte->CboPlusbl,cte->tetris.y)){
 	case 1: cte->tetris.score += 10; break; //single score
 	case 2: cte->tetris.score += 30; break; //double
 	case 3: cte->tetris.score += 50; break; //triple
@@ -135,7 +137,7 @@ int CspaceMove(CTetris* cte)
 		cte->tetris.gameState = GAME_OVER; //gamestate == GameOver
 	}
 
-	return 1; //무조건 성공으로 간주
+	return lines; //지운 라인 수 리턴
 
 }
 //함수명 : CmakeGhost
@@ -144,7 +146,7 @@ void CmakeGhost(CTetris* cte)
 {
 	int tempy = cte->tetris.y;
 	int ghostBlk[BLOCK_HEIGHT][BLOCK_WIDTH];
-	while(!crashCheck(cte->tetris.boPlusbl,cte->tetris.x,tempy)){ //충돌 안할 때
+	while(!crashCheck(cte->tetris.boPlusbl,cte->tetris.x,tempy)){ //충돌 할때까지 내려감
 		pasteBoard(cte->tetris.boPlusbl,cte->tetris.board); //일단 움직이기 전에 bpb를 board로 초기화
 		tempy++; //좌표이동
 		pasteBlock(cte->tetris.boPlusbl,block[cte->tetris.whichBlock][cte->tetris.blockState],cte->tetris.x,tempy); //block 붙이기
@@ -160,7 +162,7 @@ void CmakeGhost(CTetris* cte)
 		for(int i = 0 ; i < BLOCK_HEIGHT; i++){ //block Coloring
 			for(int j = 0 ; j < BLOCK_WIDTH ; j++){
 				if(ghostBlk[i][j]) //블럭구간만 체크
-				cte->CboPlusbl[i + cte->tetris.y][j + cte->tetris.x] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
+					cte->CboPlusbl[i + cte->tetris.y][j + cte->tetris.x] = cte->tetris.whichBlock + 2;//겹치는 구간을 다시 coloring
 			}
 		}
 	}
