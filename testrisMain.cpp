@@ -374,7 +374,7 @@ int gamePlaying() {
 	clock_t start, finish, delay; //Level 관련 변수
 	int level = 1; //게임의 레벨
 	int maxLevel = 10; //최대게임레벨
-	int levTerm = 120; //레벨당 달성목표
+	int levTerm = 150; //레벨당 달성목표
 	delay = 1000; //레벨 1의 delay
 
 	CinitGame(&cte);
@@ -495,7 +495,7 @@ void gameDisplay(CTetris * cte, int startX, int startY)
 
 void nextBlockDisplay(CTetris* cte, int startX, int startY)
 {
-	CblockColoring(cte->cBlock,block[cte->tetris.nextBlock][cte->tetris.blockState],cte->tetris.nextBlock+2);//cte 의 Cblock을 Coloring
+	CblockColoring(cte->cBlock,block[cte->tetris.nextBlock][0],cte->tetris.nextBlock+2);//cte 의 Cblock을 Coloring
 	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2);
 	for (int i = 0; i<BLOCK_WIDTH; i++) {
 		gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2 + i);
