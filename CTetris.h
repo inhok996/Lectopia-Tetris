@@ -27,10 +27,15 @@ int Crotate(CTetris* cte);
 //함수명 : spaceMove
 //return :1(성공) 0 실패
 int CspaceMove(CTetris* cte);
+//함수명 : CmakeGhost
+//return : None
 void CmakeGhost(CTetris* cte);
+//함수명 : CgameOver
+//return : None
 void CgameOver(CTetris* cte);
-void CblockColoring(CTetris* cte);
-
+//함수명 : CblokColoring
+//return : None
+void CblockColoring(int(*to)[4],int(*from)[4],int color);
 //함수명 : ClineErase
 //설명 : bpb를 체크하여 CbPb를 같이 초기화
 int ClineErase(int** bPb,int** CbPb ,int y);
