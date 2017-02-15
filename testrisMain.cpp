@@ -368,13 +368,13 @@ int gamePlaying() {
 	int moved = 1; //move가 일어나면
 	int pause = 0; //pause 발생시
 	int gFlag = 1; //ghost on off
-	int eLines = 0; //moveDown, spaceMove에서 지워진 라인 수
+	int eLines = 0; //moveDown, spaceMove에서 지워진 라인 수나 레벨업을 표시
 	int eSaved = 0; //saved lines elecDisplay parameter
 	int eFlag = 0; //erese display 시작과 동시에 켜지고 diplay 이후 꺼짐
 	clock_t start, finish, delay; //Level 관련 변수
 	int level = 1; //게임의 레벨
-	int maxLevel = 20; //최대게임레벨
-	int levTerm = 100; //레벨당 달성목표
+	int maxLevel = 10; //최대게임레벨
+	int levTerm = 120; //레벨당 달성목표
 	delay = 1000; //레벨 1의 delay
 
 	CinitGame(&cte);
@@ -495,21 +495,12 @@ void gameDisplay(CTetris * cte, int startX, int startY)
 
 void nextBlockDisplay(CTetris* cte, int startX, int startY)
 {
-	block[cte->tetris.nextBlock][0];
-	int tempBlock[BLOCK_HEIGHT][BLOCK_WIDTH];
-	for (int i = 0; i < BLOCK_HEIGHT; i++) {
-		for (int j = 0; j < BLOCK_WIDTH; j++) {
-			tempBlock[i][j] = block[cte->tetris.nextBlock][0][i][j];
-			if (tempBlock[i][j] == 1) cte->cBlock[i][j] = cte->tetris.nextBlock + 2;//첫번째블럭부터 2번으로 Coloring됨
-																					//printf("%d",cte->cBlock[i][j]);
-		}
-	}
-
+	CblockColoring(cte->cBlock,block[cte->tetris.nextBlock][cte->tetris.blockState],cte->tetris.nextBlock+2);//cte 의 Cblock을 Coloring
 	gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2);
 	for (int i = 0; i<BLOCK_WIDTH; i++) {
 		gotoxy(startX + 2 * (BOARD_WIDTH + 4), startY + 2 + i);
 		for (int j = 0; j < BLOCK_HEIGHT; j++) {
-			switch (tempBlock[i][j])
+			switch (cte->cBlock[i][j])
 			{
 			case 1:printf("■"); break;
 			case 2:textcolor(15, 4); printf("■"); textcolor(15, 0); break;
